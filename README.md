@@ -60,7 +60,7 @@ These live with the original practitioner's working tree, not in this repository
 - `concordance-v1-build-state.md` — the full state of what's built and what's deferred.
 - `concordance-v1-content-model.md` — paths, identity, supersede, the domains, the envelope.
 
-**Design rationale from the build:** `map-imp-design-summary.md` (MAP/IMP, Lintel) and the two `IMPLEMENTATION-BRIEF-*` docs the log-entry and airlock features were built from.
+**Design rationale from the build:** `map-imp-design-summary.md` (the MAP/IMP design consolidation; predates Lintel's naming) and the two `IMPLEMENTATION-BRIEF-*` docs — those two are Lintel's — that the log-entry and airlock features were built from.
 
 **Historical** (spec-era; superseded by the authoritative pair — each is marked at its top): `capstore-spine-artifact.md`, `concordance-v1-build-checklist.md`, `concordance-v1-spine-instance-brief.md`.
 

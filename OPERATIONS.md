@@ -63,6 +63,7 @@ Troubleshooting the gates (each error names the failed gate and both values): "r
 | `inbox [--all] [--read PATH]` | your mail, from the cockpit — unread by default; `--read` marks handled |
 | `totp-provision [--qr] [--force]` | generate (or re-display / rotate) the airlock secret |
 | `totp-check <code>` | verify a phone code; consumes nothing, diagnoses clock skew |
+| `backup <dest>` | full backup of everything that is truth: git mirror (all refs + state tags, verified), consistent audit snapshot, config, TOTP secret |
 
 ---
 
@@ -82,13 +83,19 @@ Out-of-band notification isn't built yet (a 1.x item), so an instance's messages
 
 ## Backups & what's truth
 
-- **Back up `concordance.git` and `audit.sqlite`.** Those are your two sources of truth — content and operations. Don't naively `cp` `audit.sqlite` while the server is running — a live copy can catch a mid-transaction state. Snapshot it consistently with `sqlite3 audit.sqlite ".backup '/path/to/audit-backup.sqlite'"` (or stop the server first). The git repo can be pushed to a remote, but use the full refspec or you'll silently drop the perspective/proposal branches:
+- **The method is one command:**
   ```bash
-  git -C concordance.git push <remote> 'refs/heads/*:refs/heads/*' 'refs/concordance/*:refs/concordance/*'
+  python admin.py --config concordance.toml backup /path/to/destination
   ```
+  It captures everything that is truth, correctly, every time: a full-ref git mirror (heads + perspectives + proposals + **state tags**, verified after push), a consistent snapshot of `audit.sqlite` (safe against a live server), your config, and the TOTP secret. Repeatable and incremental — point it at a synced folder, an external drive, or a network share, on a cadence.
+- **If you push the git repo to a remote by hand** (e.g. a private mirror), you must name all three namespaces — git's defaults silently drop two of them, and a partial refspec silently drops the state tags:
+  ```bash
+  git -C concordance.git push <remote> 'refs/heads/*:refs/heads/*' 'refs/concordance/*:refs/concordance/*' 'refs/tags/state/*:refs/tags/state/*'
+  ```
+  This is exactly the mistake `backup` exists to make impossible — prefer the command.
 - **`map_index.sqlite` needs no backup** — `reindex` regenerates it from git.
 - **Verify integrity** anytime with `verify`. The audit chain is hash-linked, and the per-land git checkpoint lets git witness any tampering of the SQLite log.
-- **Moving machines:** carry the repo + `audit.sqlite` + the Python files + your `concordance.toml`; `pip install mcp`; `reindex`; run. Nothing of value is stranded on the old box.
+- **Moving machines:** run `backup`, carry the destination folder + the suite code; on the new box `pip install mcp`, point the config at the mirrored repo (or clone from it), `reindex`, run. The backup includes the TOTP secret, so the airlock pairing moves with you.
 
 ---
 
