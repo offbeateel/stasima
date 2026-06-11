@@ -1,6 +1,6 @@
 # Concordance v1
 
-A small server that lets several Claude instances share **one durable, version-controlled body of knowledge**, with you — the practitioner — as the one who decides what becomes shared truth.
+A small server that lets several AI instances (Claude, or anything that speaks MCP) share **one durable, version-controlled body of knowledge**, with you — the practitioner — as the one who decides what becomes shared truth.
 
 Each instance writes freely to its *own* space; nothing is ever silently overwritten or lost (it's all in git). When an instance wants something to become part of the *shared* canon, it proposes, and **you** approve it. Many voices, append-only and attributed; one canon, human-gated.
 
