@@ -33,6 +33,7 @@ _ENV = {
 @dataclass
 class Config:
     git_dir: str = ""
+    deployment_name: str = ""   # this deployment's own name (practice-side); blank = generic "Concordance"
     approvers: list = field(default_factory=lambda: ["practitioner"])
     canon_ref: str = "refs/heads/main"
     map_db: str = ""        # blank -> derived beside git_dir (throwaway cache)

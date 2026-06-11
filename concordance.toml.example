@@ -3,6 +3,7 @@
 # Any CONCORDANCE_* env var overrides the matching key here.
 
 git_dir   = "/path/to/concordance.git"   # absolute path to the bare repo (Windows: "C:\\path\\to\\concordance.git")
+deployment_name = ""                     # your deployment's own name (shows in arrival, orientation, authenticator)
 approvers = ["practitioner"]          # whose review lands canon
 canon_ref = "refs/heads/main"
 

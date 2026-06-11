@@ -27,7 +27,7 @@ from canon import (LOG_DIR, CHAT_ERA_FREEZE, canon_seq, seq_display, reindex_fro
 
 def build_server(store: LocalCapStore, index=None, embedder=None, audit=None, authz=None, airlock=None, *,
                  orientation_text: str = None, orientation_base: str = "technical/orientation",
-                 seq_origin: int = CHAT_ERA_FREEZE) -> FastMCP:
+                 seq_origin: int = CHAT_ERA_FREEZE, deployment_name: str = "") -> FastMCP:
     mcp = FastMCP("concordance")
     has_map = index is not None and embedder is not None
 
@@ -117,13 +117,15 @@ def build_server(store: LocalCapStore, index=None, embedder=None, audit=None, au
 
     def _orientation():
         # static override if provided (e.g. tests); otherwise render machinery + practice slots from canon
-        return orientation_text if orientation_text else build_orientation(store, base=orientation_base)
+        return orientation_text if orientation_text else build_orientation(
+            store, base=orientation_base, deployment_name=deployment_name)
 
     # ---------------------------------------------------------------- orient
     @mcp.tool()
     def announce(instance_id: str) -> dict:
         """Announce presence; returns orientation + current canon head + your perspective tip."""
-        return {"welcome": f"Welcome, {instance_id}.", "orientation": _orientation(),
+        home = deployment_name or "the Concordance"
+        return {"welcome": f"Welcome to {home}, {instance_id}.", "orientation": _orientation(),
                 "canon_head": store.resolve_ref(store.canon_ref),
                 "your_perspective_tip": store.resolve_ref(persp_ref(instance_id)),
                 "practitioner_attention": _attention()}
@@ -443,7 +445,8 @@ def server_from_config(cfg) -> FastMCP:
     """Assemble the MCP server from a Config."""
     store, index, embedder, audit, authz, airlock = components_from_config(cfg)
     return build_server(store, index, embedder, audit, authz, airlock,
-                        orientation_base=cfg.orientation_base, seq_origin=cfg.seq_origin)
+                        orientation_base=cfg.orientation_base, seq_origin=cfg.seq_origin,
+                        deployment_name=cfg.deployment_name)
 
 
 if __name__ == "__main__":

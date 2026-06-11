@@ -56,11 +56,16 @@ def _section_body(store, canon_ref, path):
 
 
 def build_orientation(store, *, base: str = "technical/orientation",
-                      sections=SECTIONS, canon_ref: str = None) -> str:
+                      sections=SECTIONS, canon_ref: str = None, deployment_name: str = "") -> str:
     """Compose the arrival orientation: the machinery preamble + each practice section pulled live
-    from canon (so it reflects current canon), with a placeholder for any slot not yet authored."""
+    from canon (so it reflects current canon), with a placeholder for any slot not yet authored.
+    `deployment_name` personalizes the heading (the name is practice-side; the slot is suite)."""
     canon = canon_ref or store.canon_ref
-    out = [MACHINERY]
+    machinery = MACHINERY
+    if deployment_name:
+        machinery = machinery.replace("# The Concordance — how this works",
+                                      f"# {deployment_name} — a Concordance — how this works", 1)
+    out = [machinery]
     for s in sections:
         heading = s.replace("-", " ").title()
         body = _section_body(store, canon, f"{base}/{s}.md")

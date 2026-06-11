@@ -63,14 +63,16 @@ def run(args) -> dict:
     store, index, embedder, audit, authz, airlock = components_from_config(cfg)
 
     if args.cmd == "totp-provision":
+        issuer = cfg.deployment_name or "Concordance"
+        uri = lambda s: otpauth_uri(s, label=f"{issuer}:practitioner", issuer=issuer)
         path = cfg.resolved_airlock_secret()
         if os.path.exists(path) and not args.force:
             if args.qr:   # re-display the EXISTING secret's QR — no rotation
                 with open(path, encoding="utf-8") as f:
                     secret = f.read().strip()
-                qr = _qr_ascii(otpauth_uri(secret))
+                qr = _qr_ascii(uri(secret))
                 print(qr if qr else "(pip install qrcode for a scannable QR)")
-                return {"secret_path": path, "otpauth_uri": otpauth_uri(secret), "rotated": False,
+                return {"secret_path": path, "otpauth_uri": uri(secret), "rotated": False,
                         "note": "existing secret re-displayed; scan the QR or enter the secret= value manually"}
             raise SystemExit(f"secret already exists at {path} — pass --force to rotate "
                              f"(rotating invalidates the practitioner's current authenticator entry), "
@@ -79,9 +81,9 @@ def run(args) -> dict:
         with open(path, "w", encoding="utf-8") as f:
             f.write(secret + "\n")
         if args.qr:
-            qr = _qr_ascii(otpauth_uri(secret))
+            qr = _qr_ascii(uri(secret))
             print(qr if qr else "(pip install qrcode for a scannable QR)")
-        return {"secret_path": path, "otpauth_uri": otpauth_uri(secret),
+        return {"secret_path": path, "otpauth_uri": uri(secret),
                 "note": "scan the QR (or enter the secret= value manually); the secret stays "
                         "server-side, never in git — if the QR won't scan, terminal polarity is the "
                         "usual culprit; the manual key always works"}
