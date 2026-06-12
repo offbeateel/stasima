@@ -142,7 +142,7 @@ async def main():
         # (8) abort: no code, back to open, entries intact
         out = payload(await call("stage_revert", proposal_id="p-2"))
         assert out["state"] == "open"
-        assert "practice/beta.md" in store.list_paths("refs/concordance/proposals/p-2")
+        assert "practice/beta.md" in store.list_paths("refs/cap/proposals/p-2")
         assert not err(await call("propose", instance_id="r2", proposal_id="p-2", domain="practice",
                                   slug="gamma", body="writable again", op_id="p-2-3"))
         print("abort (free)        OK")

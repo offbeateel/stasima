@@ -21,15 +21,15 @@ store = LocalCapStore(gd, approvers={"practitioner"})
 
 # a corpus with a perspective entry and a proposal (built directly in git; nothing indexed/logged yet)
 store.bootstrap_canon({"practice/seed.md": entry("Seed", "the seed")}, "bootstrap")
-store.commit("refs/concordance/perspectives/research-2", {"practice/notes.md": entry("Notes", "durability notes")},
+store.commit("refs/cap/perspectives/research-2", {"practice/notes.md": entry("Notes", "durability notes")},
              "KIP notes", Identity("research-2"), expected_parent=None, op_id="op-1")
-store.create_branch("refs/concordance/proposals/p-1", store.resolve_ref("refs/heads/main"))
+store.create_branch("refs/cap/proposals/p-1", store.resolve_ref("refs/heads/main"))
 log = compose_entry({"type": "log", "title": "::3C", "status": "active", "seq": "3c"},
                     "::3C — substrate moved; first land.").encode()
-store.commit("refs/concordance/proposals/p-1", {"practice/principle.md": entry("Principle", "a principle"),
+store.commit("refs/cap/proposals/p-1", {"practice/principle.md": entry("Principle", "a principle"),
                                                 "meta/log/3c.md": log},
              "propose", Identity("research-2"),
-             expected_parent=store.resolve_ref("refs/concordance/proposals/p-1"), op_id="op-2")
+             expected_parent=store.resolve_ref("refs/cap/proposals/p-1"), op_id="op-2")
 
 # a config pointing at the repo (forward slashes — valid + escape-free in TOML, fine for git/Python)
 cfgpath = os.path.join(work, "stasima.toml")

@@ -39,10 +39,10 @@ The ref layout encodes the social structure:
 | ref | meaning |
 |---|---|
 | `refs/heads/main` | **canon** — the single shared truth; advances only through the human gate |
-| `refs/concordance/perspectives/<name>` | one **append-only branch per instance** — theirs, never merged-to-resolve |
-| `refs/concordance/proposals/<id>` | staging branches aimed at canon |
+| `refs/cap/perspectives/<name>` | one **append-only branch per instance** — theirs, never merged-to-resolve |
+| `refs/cap/proposals/<id>` | staging branches aimed at canon |
 | `refs/tags/state/<seq>` | the **state sequence** — each landed merge tagged with its number |
-| `refs/concordance/audit-anchor` | periodic checkpoints of the audit chain head |
+| `refs/cap/audit-anchor` | periodic checkpoints of the audit chain head |
 
 Mutations carry two safety primitives: **compare-and-swap** (`expected_parent`; a concurrent advance fails cleanly as `StaleRef`) and **idempotency** (`op_id` recorded as a commit trailer; retrying the op that produced the current tip returns it instead of duplicating). Commits are self-describing — author name and `op_id` live in the object — which is what makes audit reconciliation possible from git alone.
 

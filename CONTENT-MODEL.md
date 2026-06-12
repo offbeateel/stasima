@@ -14,7 +14,7 @@ The consequence is load-bearing: **a path is a permanent, public name, not a sto
 
 ## Layer: the tree, not a path prefix
 
-- **Canon** = the `main` tree (`refs/heads/main`). **Perspectives** = per-instance append-only branches (`refs/concordance/perspectives/<id>`).
+- **Canon** = the `main` tree (`refs/heads/main`). **Perspectives** = per-instance append-only branches (`refs/cap/perspectives/<id>`).
 - "Canon" is **never a path segment** — the *branch* encodes the layer. The same domain folders appear at the top of every tree; which ref you're on tells you draft-vs-production.
 - **Birth → promotion.** Every entry is authored as a perspective entry (ungated, append-only). Promotion to canon is a *separate, gated* op — a proposal copying the entry onto `main` through the practitioner's review. The author cannot self-promote; the op invoked sets the layer.
 - **Why a tree, not a status flag.** Keeping canon a real destination tree preserves two foundational properties: canon stays a clonable, queryable, structurally-gated tree (the no-silent-loss guarantee + practitioner authority). A flag-on-perspective-entries model would dissolve both.

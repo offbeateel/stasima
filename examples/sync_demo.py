@@ -15,7 +15,7 @@ from local_capstore import LocalCapStore
 KEPT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "demo.git")  # the archived demo repo
 work = tempfile.mkdtemp(prefix="capstore-sync-")
 
-# a full working copy of the kept repo (--mirror copies ALL refs, incl. refs/concordance/*)
+# a full working copy of the kept repo (--mirror copies ALL refs, incl. refs/cap/*)
 source = os.path.join(work, "source.git")
 sp.run(["git", "clone", "--mirror", "-q", KEPT, source], check=True)
 

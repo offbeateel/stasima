@@ -19,8 +19,8 @@ Oid = str
 ZERO = "0" * 40  # sha1 "ref must not exist" sentinel
 
 # the ref layout (single source — everything else imports these)
-PERSP_PREFIX = "refs/concordance/perspectives/"
-PROP_PREFIX = "refs/concordance/proposals/"
+PERSP_PREFIX = "refs/cap/perspectives/"
+PROP_PREFIX = "refs/cap/proposals/"
 
 
 # --- supporting types (from the artifact) -----------------------------------
@@ -373,7 +373,7 @@ class LocalCapStore:
     # Default git refspecs only move refs/heads/* + tags, which would SILENTLY drop
     # perspectives and proposals. These refspecs carry the whole store, including the
     # state-sequence tags (state/<seq>) that number canon.
-    SYNC_REFSPECS = ["refs/heads/*:refs/heads/*", "refs/concordance/*:refs/concordance/*",
+    SYNC_REFSPECS = ["refs/heads/*:refs/heads/*", "refs/cap/*:refs/cap/*",
                      "refs/tags/state/*:refs/tags/state/*"]
 
     def set_remote(self, name: str, url: str) -> None:
@@ -395,7 +395,7 @@ class LocalCapStore:
         """Compare local refs against the remote's; surface anything missing or mismatched.
         This is the anti-silent-loss check — a push without it is just a hope."""
         local = {}
-        for pfx in ("refs/heads/", "refs/concordance/", "refs/tags/state/"):
+        for pfx in ("refs/heads/", "refs/cap/", "refs/tags/state/"):
             for r in self.list_refs(pfx):
                 local[r.name] = r.oid
         remote_refs = {}
@@ -424,7 +424,7 @@ if __name__ == "__main__":
     store.bootstrap_canon({"canon/orientation.md": b"Welcome to the Stasima.\n"}, "Bootstrap canon")
     print("canon bootstrapped:", store.resolve_ref("refs/heads/main")[:10])
 
-    persp = "refs/concordance/perspectives/research-2"
+    persp = "refs/cap/perspectives/research-2"
     r1 = store.commit(persp, {"instances/research-2/entries/0001.md": b"Entry 1.\n"},
                       "KIP 0001", Identity("research-2"), expected_parent=None, op_id="op-aaa")
     r2 = store.commit(persp, {"instances/research-2/entries/0002.md": b"Entry 2.\n"},
@@ -444,11 +444,11 @@ if __name__ == "__main__":
 
     # proposal → prepare → land (human gate)
     main_tip = store.resolve_ref("refs/heads/main")
-    store.create_branch("refs/concordance/proposals/p-001", main_tip)
-    store.commit("refs/concordance/proposals/p-001",
+    store.create_branch("refs/cap/proposals/p-001", main_tip)
+    store.commit("refs/cap/proposals/p-001",
                  {"canon/entries/principle-1.md": b"Never silently lose work.\n"},
                  "Propose principle-1", Identity("research-2"), expected_parent=main_tip, op_id="op-ccc")
-    prep = store.prepare_merge("refs/concordance/proposals/p-001")
+    prep = store.prepare_merge("refs/cap/proposals/p-001")
     print("prepared candidate:", prep.candidate_oid[:10], "changes:", prep.summary.changed_paths,
           "authors:", prep.summary.authoring_instances)
 

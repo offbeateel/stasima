@@ -90,7 +90,7 @@ Out-of-band notification isn't built yet (a 1.x item), so an instance's messages
   It captures everything that is truth, correctly, every time: a full-ref git mirror (heads + perspectives + proposals + **state tags**, verified after push), a consistent snapshot of `audit.sqlite` (safe against a live server), your config, and the TOTP secret. Repeatable and incremental — point it at a synced folder, an external drive, or a network share, on a cadence.
 - **If you push the git repo to a remote by hand** (e.g. a private mirror), you must name all three namespaces — git's defaults silently drop two of them, and a partial refspec silently drops the state tags:
   ```bash
-  git -C stasima.git push <remote> 'refs/heads/*:refs/heads/*' 'refs/concordance/*:refs/concordance/*' 'refs/tags/state/*:refs/tags/state/*'
+  git -C stasima.git push <remote> 'refs/heads/*:refs/heads/*' 'refs/cap/*:refs/cap/*' 'refs/tags/state/*:refs/tags/state/*'
   ```
   This is exactly the mistake `backup` exists to make impossible — prefer the command.
 - **`map_index.sqlite` needs no backup** — `reindex` regenerates it from git.

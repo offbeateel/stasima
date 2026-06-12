@@ -26,7 +26,7 @@ from typing import Optional
 from local_capstore import Identity, PERSP_PREFIX, PROP_PREFIX
 
 GENESIS = "0" * 64
-ANCHOR_REF = "refs/concordance/audit-anchor"
+ANCHOR_REF = "refs/cap/audit-anchor"
 
 _HASHED = ["seq", "ts", "actor", "op", "target_ref", "target_path",
            "op_id", "result_oid", "outcome", "detail", "prev_hash"]
@@ -159,7 +159,7 @@ def reconcile_from_git(store, audit: AuditLog) -> int:
 
 
 def anchor_audit_head(store, audit: AuditLog, anchor_ref: str = ANCHOR_REF) -> dict:
-    """Write the current chain head into git — call on each canon land. Rides the refs/concordance/*
+    """Write the current chain head into git — call on each canon land. Rides the refs/cap/*
     sync refspec, so the anchor replicates to any mirror. git then witnesses the SQLite log's integrity."""
     payload = {"seq": audit.count(), "head": audit.head()}
     store.commit(anchor_ref, {"audit-head.json": json.dumps(payload, separators=(",", ":")).encode()},

@@ -24,7 +24,7 @@ from cap_server import build_server, compose_entry, land_and_record
 from mcp.shared.memory import create_connected_server_and_client_session as connect
 
 CANON = "refs/heads/main"
-def persp(i): return f"refs/concordance/perspectives/{i}"
+def persp(i): return f"refs/cap/perspectives/{i}"
 
 
 def payload(res):
@@ -89,7 +89,7 @@ async def main():
         print("reconcile->propose  OK")
 
         # --- a canon land re-staleness (practitioner lands p-1 out of band) ---
-        prepared = store.prepare_merge("refs/concordance/proposals/p-1")
+        prepared = store.prepare_merge("refs/cap/proposals/p-1")
         land_and_record(store, index, emb, audit, prepared, Approval(prepared.candidate_oid, "practitioner", "cli"))
         new_tip = store.resolve_ref(CANON)
         assert new_tip != old_tip

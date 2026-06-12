@@ -10,7 +10,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from authz import DefaultPolicy, Denied
 
 p = DefaultPolicy()
-PE = "refs/concordance/perspectives/"
+PE = "refs/cap/perspectives/"
 
 
 def denied(fn):
@@ -27,7 +27,7 @@ p.check("research-2", "kip_get", "refs/heads/main", "practice/x.md")
 
 # allowed writes
 p.check("research-2", "kip_commit", PE + "research-2", "practice/x.md")          # own perspective
-p.check("research-2", "propose", "refs/concordance/proposals/p-1", "practice/x.md")  # a proposal
+p.check("research-2", "propose", "refs/cap/proposals/p-1", "practice/x.md")  # a proposal
 p.check("research-2", "imp_send", PE + "research-2", "messages/op-1.md")          # own messages
 
 # denied writes

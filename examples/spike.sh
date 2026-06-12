@@ -67,24 +67,24 @@ banner "STEP 2  perspective write — append-only branch per instance"
 t="$(build_tree "" instances/research-2/entries/0001.md $'Entry 1 by research-2.\n')"
 p1="$(GIT_AUTHOR_NAME=research-2 GIT_AUTHOR_EMAIL=r2@stasima.local \
       git commit-tree "$t" -m $'KIP 0001\n\nop-id: op-aaa\ninstance-id: research-2')"
-git update-ref refs/concordance/perspectives/research-2 "$p1" "$ZERO"
+git update-ref refs/cap/perspectives/research-2 "$p1" "$ZERO"
 pass "perspective created at $p1"
 
 # second append, based on the previous tip's tree, CAS expects old = p1
 t="$(build_tree "$p1" instances/research-2/entries/0002.md $'Entry 2 by research-2.\n')"
 p2="$(GIT_AUTHOR_NAME=research-2 GIT_AUTHOR_EMAIL=r2@stasima.local \
       git commit-tree "$t" -p "$p1" -m $'KIP 0002\n\nop-id: op-bbb\ninstance-id: research-2')"
-git update-ref refs/concordance/perspectives/research-2 "$p2" "$p1"
+git update-ref refs/cap/perspectives/research-2 "$p2" "$p1"
 pass "perspective advanced $p1 -> $p2 (CAS old=p1 matched)"
 
 # ============================================================================
 banner "STEP 3  compare-and-swap rejects a stale write (StaleRef)"
 # tip is now p2; try to update with old=p1 (what a stale caller would send)
 set +e
-err="$(git update-ref refs/concordance/perspectives/research-2 "$p1" "$p1" 2>&1)"; rc=$?
+err="$(git update-ref refs/cap/perspectives/research-2 "$p1" "$p1" 2>&1)"; rc=$?
 set -e
 [ $rc -ne 0 ] && pass "stale CAS rejected, exit=$rc  (\"${err##*: }\")" || fail "stale CAS should have failed"
-[ "$(git rev-parse refs/concordance/perspectives/research-2)" = "$p2" ] && pass "ref unchanged after rejected CAS" || fail "ref moved on stale CAS"
+[ "$(git rev-parse refs/cap/perspectives/research-2)" = "$p2" ] && pass "ref unchanged after rejected CAS" || fail "ref moved on stale CAS"
 
 # ============================================================================
 banner "STEP 4  append-only check (NonFastForward) via merge-base"
@@ -96,13 +96,13 @@ if git merge-base --is-ancestor "$p2" "$side"; then fail "side should not be FF"
 
 # ============================================================================
 banner "STEP 5  proposal to canon + prepare_merge (durable, UNREFERENCED candidate)"
-git update-ref refs/concordance/proposals/p-001 "$c0" "$ZERO"           # branch proposal off main
+git update-ref refs/cap/proposals/p-001 "$c0" "$ZERO"           # branch proposal off main
 t="$(build_tree "$c0" canon/entries/principle-1.md $'Principle 1: never silently lose work.\n')"
 pr="$(GIT_AUTHOR_NAME=research-2 GIT_AUTHOR_EMAIL=r2@stasima.local \
       git commit-tree "$t" -p "$c0" -m $'Propose principle-1\n\nop-id: op-ccc\ninstance-id: research-2')"
-git update-ref refs/concordance/proposals/p-001 "$pr" "$c0"
+git update-ref refs/cap/proposals/p-001 "$pr" "$c0"
 
-mtree="$(git merge-tree --write-tree refs/heads/main refs/concordance/proposals/p-001)"   # clean -> tree oid
+mtree="$(git merge-tree --write-tree refs/heads/main refs/cap/proposals/p-001)"   # clean -> tree oid
 cand="$(git commit-tree "$mtree" -p "$c0" -p "$pr" -m $'Merge p-001 into canon\n\napproved-by: <pending>')"
 [ "$(git cat-file -t "$cand")" = commit ] && pass "merge candidate $cand created and durable"
 # crucial: NO ref points at it yet

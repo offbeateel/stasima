@@ -20,7 +20,7 @@ from entries import compose_entry
 from cap_server import land_and_record, canon_seq, seq_display
 
 CANON = "refs/heads/main"
-def prop(p): return f"refs/concordance/proposals/{p}"
+def prop(p): return f"refs/cap/proposals/{p}"
 
 work = tempfile.mkdtemp(prefix="cap-log-")
 gd = os.path.join(work, "stasima.git")

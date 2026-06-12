@@ -14,8 +14,8 @@ from map_index import SqliteMapIndex, StubEmbedder
 from cap_server import compose_entry, reindex_from_git
 
 CANON = "refs/heads/main"
-def persp(i): return f"refs/concordance/perspectives/{i}"
-def prop(p): return f"refs/concordance/proposals/{p}"
+def persp(i): return f"refs/cap/perspectives/{i}"
+def prop(p): return f"refs/cap/proposals/{p}"
 
 work = tempfile.mkdtemp(prefix="cap-reindex-")
 gd = os.path.join(work, "stasima.git")

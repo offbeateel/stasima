@@ -15,7 +15,7 @@ from abc import ABC, abstractmethod
 from typing import Optional
 
 CANON_REF = "refs/heads/main"
-PERSP_PREFIX = "refs/concordance/perspectives/"
+PERSP_PREFIX = "refs/cap/perspectives/"
 WRITE_OPS = {"kip_commit", "propose", "imp_send"}
 
 
