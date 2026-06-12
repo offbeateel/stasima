@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """
 Configuration — one typed, validated config per deployment, replacing scattered env vars.
 

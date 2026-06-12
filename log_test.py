@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """
 Acceptance checks for log entries + the state sequence (per the implementation brief):
   1. proposal without a log entry -> rejected at land

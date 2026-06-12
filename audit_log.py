@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """
 Audit log — the operation-layer TRUTH, complementary to git's content-layer truth.
 

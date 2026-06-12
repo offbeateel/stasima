@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """
 Proves Config: defaults, TOML load, env override, validation (missing/invalid/unknown), and that
 server_from_config assembles a working server from a Config.

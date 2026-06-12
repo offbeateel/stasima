@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """
 Stasima CAP server — MCP protocol surface over LocalCapStore + the MAP index + the audit log.
 

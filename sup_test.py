@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """
 Proves SUP + canon coherence through the MCP client:
   - body-immutability guard on kip_commit (supersede, don't overwrite)

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """
 Exercises the MAP index + indexer + IMP queries with the deterministic StubEmbedder
 (offline, reproducible). Proves the schema, scope filtering, attribution, the Q4 raw

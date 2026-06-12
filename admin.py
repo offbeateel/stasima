@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """
 Admin CLI — practitioner-side maintenance + promotion. NOT model-facing: these are operator ops,
 and `land` (promotion to canon) IS the human gate, performed here out of band.

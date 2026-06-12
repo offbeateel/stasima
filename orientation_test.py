@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """
 Proves the orientation framework: a practice-agnostic machinery preamble, plus practice-specific
 sections pulled live from canon, with labeled placeholders for slots a deployment hasn't authored.

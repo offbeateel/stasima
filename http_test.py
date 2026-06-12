@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """
 HTTP transport, end to end: boot the real server subprocess under STASIMA_CONFIG with
 transport="http", connect with the MCP streamable-http client, initialize, list tools, announce.

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Run the whole suite: python run_tests.py  (each *_test.py is standalone; this just runs them all)."""
 import glob
 import os

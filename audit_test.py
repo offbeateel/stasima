@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """
 Proves the audit subsystem standalone: hash chain + verify + tamper-detection, read-state as
 append-only events, reconciliation from git (the git-first-then-audit recovery), and the

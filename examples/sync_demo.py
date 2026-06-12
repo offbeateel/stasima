@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """
 Proves the remote-sync helper: pushing to a stand-in remote (a second local bare
 repo == same machinery as GitHub, no credentials) carries the WHOLE store, and

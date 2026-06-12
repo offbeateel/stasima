@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """
 Entry serialization — the content-model's YAML-front-matter + body format.
 

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """
 Authorization — the policy seam every mutating op crosses before its handler acts.
 

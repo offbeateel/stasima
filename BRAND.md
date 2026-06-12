@@ -23,7 +23,7 @@ being mistaken for the original (and vice-versa).
   favicon form, in all provided color variants.
 - The **wordmark + logo lock-up** when used together.
 
-These marks are trademarks of **Antistrophe** (™), whether or not formally
+These marks are trademarks of **Antistrophos** (™), whether or not formally
 registered.
 
 ## 2. The short version
@@ -100,16 +100,20 @@ When you do use the official logo (per §3):
 - **Use the provided files.** Don't recreate or trace the mark.
 - **Don't recolor or restyle it.** Pick the variant that fits your background
   rather than editing the art:
-  - `brand/favicon_transparent.svg` / `brand/favicon-*.png` — for light or unknown
+  - `brand/stasima_favicon.svg` / `brand/stasima-favicon-*.png` — for light or unknown
     backgrounds.
-  - `brand/favicon_white.svg` — on a solid white tile.
-  - `brand/favicon_black.svg` / `brand/favicon-512-dark.png` — inverted, for dark
+  - `brand/stasima_favicon_white.svg` — on a solid white tile.
+  - `brand/stasima_favicon_dark.svg` / `brand/stasima-favicon-512-dark.png` — inverted, for dark
     backgrounds.
 - **Keep clear space** around the mark equal to at least the height of one
   trefoil loop; don't crowd it with text or other logos.
 - **Don't distort** — scale proportionally only.
 - **Minimum size:** the simplified favicon reads down to ~16 px; below that, omit
   the mark rather than shrinking it further.
+- **The badge** (`brand/stasima_badge.svg`) is an official alternate mark — the detailed
+  reduction between the full emblem and the favicon. Use it where the favicon is too plain
+  and the emblem too large (stickers, avatars, section headers); the same no-alteration
+  rules apply.
 
 ### Color palette (for reference, not for re-coloring the logo)
 
@@ -125,9 +129,9 @@ When you do use the official logo (per §3):
 
 Two different things apply to the artwork:
 
-- **Copyright** in the logo image files is held by **Antistrophe**. The files
+- **Copyright** in the logo image files is held by **Antistrophos**. The files
   are made available so you can use them *as described in these guidelines*.
-- **Trademark** rights in the name and mark are also held by **Antistrophe**
+- **Trademark** rights in the name and mark are also held by **Antistrophos**
   and are governed by this document, independent of the software license.
 
 The open-source **software license grants no trademark rights**: the Apache
@@ -141,5 +145,5 @@ the project's issue tracker: **https://github.com/offbeateel/stasima/issues**. W
 
 ---
 
-*© 2026 Antistrophe. "Stasima" and the Stasima logo are trademarks
-of Antistrophe. Project repository: https://github.com/offbeateel/stasima.*
+*© 2026 Antistrophos. "Stasima" and the Stasima logo are trademarks
+of Antistrophos. Project repository: https://github.com/offbeateel/stasima.*

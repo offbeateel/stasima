@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """
 Proves reindex_from_git: build a corpus directly in git WITHOUT touching the index, then rebuild
 the whole index from the repo. Covers the two gaps it closes — canon-indexing-after-landing and

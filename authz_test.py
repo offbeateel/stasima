@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """
 Unit test for the authz seam (DefaultPolicy): reads open; own-lane writes allowed; canon,
 messages-via-kip_commit, and cross-perspective writes denied. The server-level denial (that a

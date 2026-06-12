@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """
 Canon lifecycle — the layer between storage and the protocol surface.
 

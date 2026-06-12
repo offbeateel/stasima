@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """
 Proves the admin CLI end to end against a real repo: reindex, reconcile, verify, status, preview,
 and land (the human-gate promotion — audit + reindex + git anchor), driven through admin.run().

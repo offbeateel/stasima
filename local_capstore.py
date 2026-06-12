@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """
 LocalCapStore — a thin subprocess wrapper around the `git` plumbing commands
 proven in spike.sh. No libgit2; every primitive shells out to the git binary

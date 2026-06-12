@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """
 Live-embeddings acceptance (NOT part of run_tests.py — needs a running model server).
 

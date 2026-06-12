@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """
 MAP index — the derived, rebuildable projection of the corpus that MAP/IMP query.
 

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """
 Orientation framework — practice-agnostic machinery + practice-specific slots.
 

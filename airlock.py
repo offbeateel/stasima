@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """
 Airlock — TOTP two-phase remote approval (the mediated-channel counterpart of console `land`).
 

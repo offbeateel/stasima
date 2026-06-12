@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """
 Airlock acceptance checks (per the implementation brief), with an injectable clock:
   1. two codes from the same window -> land rejected (strict ordering; tested with floor=0 to

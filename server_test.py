@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """
 Full-loop test through the real MCP client/protocol path (in-memory transport):
 orient -> author (indexed inline) -> map_search -> read own trail -> propose -> check status

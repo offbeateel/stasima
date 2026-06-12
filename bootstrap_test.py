@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """
 Proves `admin bootstrap`: seeds an empty canon from a folder of .md entries (wrapping plain markdown
 with a sensible envelope, using front-matter as-is), creates the repo if missing, indexes, and
