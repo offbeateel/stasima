@@ -9,9 +9,9 @@ import sys
 import tempfile
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from local_capstore import LocalCapStore, Identity
-from entries import compose_entry
-import admin
+from stasima.local_capstore import LocalCapStore, Identity
+from stasima.entries import compose_entry
+from stasima import admin
 
 entry = lambda title, body: compose_entry({"type": "kno", "title": title, "status": "active"}, body).encode()
 
@@ -62,7 +62,7 @@ assert "practice/principle.md" in store.list_paths("refs/heads/main"), "promotio
 
 # totp: provision -> a real current-window code verifies; a wrong code reports cleanly
 import time
-from airlock import totp_at, STEP
+from stasima.airlock import totp_at, STEP
 pv = run("totp-provision")
 print("provision", {"secret_path": pv["secret_path"]})
 secret = open(pv["secret_path"], encoding="utf-8").read().strip()

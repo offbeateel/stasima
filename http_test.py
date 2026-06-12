@@ -15,7 +15,7 @@ import anyio
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-from config import Config, ConfigError
+from stasima.config import Config, ConfigError
 from mcp import ClientSession
 from mcp.client.streamable_http import streamablehttp_client
 
@@ -46,7 +46,7 @@ with open(cfgpath, "w", encoding="utf-8") as f:
     f.write(f'git_dir = "{gd.replace(os.sep, "/")}"\ntransport = "http"\nhttp_port = {port}\n')
 
 env = dict(os.environ, STASIMA_CONFIG=cfgpath)
-proc = sp.Popen([sys.executable, os.path.join(HERE, "cap_server.py")], env=env,
+proc = sp.Popen([sys.executable, "-m", "stasima.cap_server"], env=env, cwd=HERE,
                 stdout=sp.DEVNULL, stderr=sp.DEVNULL)
 try:
     deadline = time.time() + 30

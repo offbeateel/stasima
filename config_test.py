@@ -9,7 +9,7 @@ import sys
 import tempfile
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from config import Config, ConfigError
+from stasima.config import Config, ConfigError
 
 
 def raises(fn):
@@ -60,7 +60,7 @@ print("validation:      OK")
 work = tempfile.mkdtemp()
 gd = os.path.join(work, "stasima.git")
 sp.run(["git", "init", "--bare", "-q", gd], check=True)
-from cap_server import server_from_config
+from stasima.cap_server import server_from_config
 mcp = server_from_config(Config.load(env={"STASIMA_GIT_DIR": gd}))
 assert mcp is not None
 print("assembly:        OK")

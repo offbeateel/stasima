@@ -7,10 +7,10 @@ its story attached), the practitioner's landing routine, and the index rebuild. 
 (cap_server), the cockpit (admin), and the airlock — none of which should have to reach through the
 protocol surface to get at lifecycle machinery.
 """
-from entries import parse_entry
-from local_capstore import LocalCapStore, PERSP_PREFIX
-from map_index import index_entry
-from audit_log import anchor_audit_head
+from .entries import parse_entry
+from .local_capstore import LocalCapStore, PERSP_PREFIX
+from .map_index import index_entry
+from .audit_log import anchor_audit_head
 
 LOG_DIR = "meta/log/"
 STATE_TAGS = "refs/tags/state/"

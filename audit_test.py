@@ -10,8 +10,8 @@ import sys
 import tempfile
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from local_capstore import LocalCapStore, Identity
-from audit_log import SqliteAuditLog, reconcile_from_git, anchor_audit_head, verify_against_anchor
+from stasima.local_capstore import LocalCapStore, Identity
+from stasima.audit_log import SqliteAuditLog, reconcile_from_git, anchor_audit_head, verify_against_anchor
 
 def persp(i): return f"refs/cap/perspectives/{i}"
 

@@ -27,14 +27,13 @@ import subprocess as sp
 import sys
 import time
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from config import Config
-from entries import compose_entry
-from cap_server import components_from_config
-from canon import reindex_from_git, land_and_record, canon_seq, seq_display, LOG_DIR
-from audit_log import reconcile_from_git, anchor_audit_head, verify_against_anchor
-from local_capstore import Approval, MergeConflict, PERSP_PREFIX as PERSP, PROP_PREFIX as PROP
-from airlock import generate_secret, otpauth_uri, verify_code, totp_at, STEP
+from .config import Config
+from .entries import compose_entry
+from .cap_server import components_from_config
+from .canon import reindex_from_git, land_and_record, canon_seq, seq_display, LOG_DIR
+from .audit_log import reconcile_from_git, anchor_audit_head, verify_against_anchor
+from .local_capstore import Approval, MergeConflict, PERSP_PREFIX as PERSP, PROP_PREFIX as PROP
+from .airlock import generate_secret, otpauth_uri, verify_code, totp_at, STEP
 
 
 def _first_heading(text: str):

@@ -8,7 +8,7 @@ Follow this once to stand up a deployment. After it, day-to-day lives in **[OPER
 
 - **git ≥ 2.38**
 - **Python ≥ 3.12** (tested on 3.14)
-- `pip install mcp` (and optionally `qrcode`, for a scannable QR during airlock setup)
+- `pip install -e .` from the repo root (or `pip install stasima` from PyPI once published) — installs the package + the `stasima` / `stasima-admin` commands. Optional extra: `pip install -e ".[qr]"` for a scannable QR during airlock setup.
 - *Optional, for real semantic search:* a local embedding server — Ollama is the lightest path (`ollama pull nomic-embed-text`, ~274 MB, CPU-fine). Without one, search runs on a built-in stub — fine for setup, weak for meaning. You can add it later (see OPERATIONS → Embeddings, including the required task prefixes).
 
 ---
@@ -57,8 +57,8 @@ The substrate must never silently lose committed work.
 Then seed in one command (creates the repo if needed, seeds canon, builds the search index):
 
 ```bash
-python admin.py --config stasima.toml bootstrap seed/
-python admin.py --config stasima.toml status        # confirm: canon_head set, entries present
+stasima-admin --config stasima.toml bootstrap seed/
+stasima-admin --config stasima.toml status        # confirm: canon_head set, entries present
 ```
 
 ---
@@ -71,8 +71,8 @@ The server speaks MCP over stdio. Point a client (Claude Desktop / Claude Code) 
 {
   "mcpServers": {
     "stasima": {
-      "command": "python",
-      "args": ["/abs/path/to/cap_server.py"],
+      "command": "stasima",
+      "args": [],
       "env": { "STASIMA_CONFIG": "/abs/path/to/stasima.toml" }
     }
   }
@@ -88,8 +88,8 @@ When you hand a chat this connection, also hand it **its name** — it passes th
 If you'll ever approve canon landings away from the console (through an instance conversation on your phone), set up the TOTP pairing now:
 
 ```bash
-python admin.py --config stasima.toml totp-provision --qr   # scan with any authenticator app
-python admin.py --config stasima.toml totp-check <code>     # confirm the pairing
+stasima-admin --config stasima.toml totp-provision --qr   # scan with any authenticator app
+stasima-admin --config stasima.toml totp-check <code>     # confirm the pairing
 ```
 
 Skippable — console `land` works without it, and you can provision later. Details in OPERATIONS → *Approving remotely*.
@@ -97,8 +97,8 @@ Skippable — console `land` works without it, and you can provision later. Deta
 ## 6. Verify
 
 ```bash
-python admin.py --config stasima.toml status     # canon head, seq, perspectives, audit health
-python admin.py --config stasima.toml verify     # audit chain integrity
+stasima-admin --config stasima.toml status     # canon head, seq, perspectives, audit health
+stasima-admin --config stasima.toml verify     # audit chain integrity
 python run_tests.py                                  # the full suite (12 files), if you want belt-and-braces
 ```
 

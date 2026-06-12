@@ -8,7 +8,7 @@ import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from map_index import SqliteMapIndex, StubEmbedder, index_entry
+from stasima.map_index import SqliteMapIndex, StubEmbedder, index_entry
 
 CANON = "refs/heads/main"
 def persp(i): return f"refs/cap/perspectives/{i}"

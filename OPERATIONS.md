@@ -3,7 +3,7 @@
 The keep-open doc. Once you're set up ([SETUP.md](SETUP.md)), this is everything you need to run and tend a deployment. Run the server with:
 
 ```bash
-STASIMA_CONFIG=/abs/path/to/stasima.toml python cap_server.py
+STASIMA_CONFIG=/abs/path/to/stasima.toml stasima
 ```
 
 **Two transports** (`transport` in the config):
@@ -15,7 +15,7 @@ STASIMA_CONFIG=/abs/path/to/stasima.toml python cap_server.py
 All maintenance is through the admin CLI, which you point at the same config:
 
 ```bash
-python admin.py --config stasima.toml <command>
+stasima-admin --config stasima.toml <command>
 ```
 
 ---
@@ -25,9 +25,9 @@ python admin.py --config stasima.toml <command>
 This is the part only you can do. An instance creates a proposal (`propose`); it sits as a branch until you decide. The loop:
 
 ```bash
-python admin.py --config stasima.toml status        # what's open
-python admin.py --config stasima.toml preview p-1   # dry-run: conflicts? what paths change?
-python admin.py --config stasima.toml land p-1 --by practitioner
+stasima-admin --config stasima.toml status        # what's open
+stasima-admin --config stasima.toml preview p-1   # dry-run: conflicts? what paths change?
+stasima-admin --config stasima.toml land p-1 --by practitioner
 ```
 
 `land` is the human gate. It merges the proposal into canon, records it in the audit log, **tags the merge commit with the new state number** (`state/<seq>`), rebuilds the search index, and writes a tamper-evident checkpoint of the audit chain into git. After a land, every instance must reconcile with the new canon before its next proposal — that's by design (it keeps them current with shared truth).
@@ -40,7 +40,7 @@ If `preview` reports conflicts, don't land — the proposing instance needs to r
 
 When you're not at the console and approving *through an instance conversation* (e.g. on your phone), use the airlock instead: two TOTP codes from your authenticator app, one per phase, with enforced review time between them. The console `land` path is unchanged — at the console, the console is your out-of-band channel.
 
-**One-time setup:** `python admin.py --config stasima.toml totp-provision` — add the printed `otpauth://` URI to your authenticator app (every major app also accepts the `secret=` value via "enter a setup key", time-based, 6 digits). The secret stays server-side (never in git; it's gitignored). Then confirm the pairing with a code from your phone: `admin.py … totp-check 123456` — it verifies without consuming anything and diagnoses clock skew if the code doesn't match.
+**One-time setup:** `stasima-admin --config stasima.toml totp-provision` — add the printed `otpauth://` URI to your authenticator app (every major app also accepts the `secret=` value via "enter a setup key", time-based, 6 digits). The secret stays server-side (never in git; it's gitignored). Then confirm the pairing with a code from your phone: `stasima-admin … totp-check 123456` — it verifies without consuming anything and diagnoses clock skew if the code doesn't match.
 
 **The flow** (you speak the codes; the instance relays them to `stage_approve` / `land_approve`):
 1. Give the instance your **current code** → it stages the proposal: frozen for review, merge prepared, and you're shown the staged oid, changed paths, and log-entry seq.
@@ -83,7 +83,7 @@ Remember **supersede, not edit**: a revised entry is a *new* entry that supersed
 
 ## Staying reachable (interim)
 
-Out-of-band notification isn't built yet (a 1.x item), so an instance's messages to you — including an "I think I'm drifting" call — wait in a pull inbox until you look. Until notification exists, **you have to poll**, and the cockpit covers it: `admin.py … inbox` lists your unread mail (sender, authored subject, coordinates), `inbox --read <path>` marks one handled, and `status` shows the unread count (`practitioner_unread`) so a routine status check doubles as the mail check. Make the cadence an explicit commitment in your deployment's `conduct/` corpus ("the practitioner checks at least every N") — that turns an unstated gap into a kept promise, and it's corpus-level, not protocol.
+Out-of-band notification isn't built yet (a 1.x item), so an instance's messages to you — including an "I think I'm drifting" call — wait in a pull inbox until you look. Until notification exists, **you have to poll**, and the cockpit covers it: `stasima-admin … inbox` lists your unread mail (sender, authored subject, coordinates), `inbox --read <path>` marks one handled, and `status` shows the unread count (`practitioner_unread`) so a routine status check doubles as the mail check. Make the cadence an explicit commitment in your deployment's `conduct/` corpus ("the practitioner checks at least every N") — that turns an unstated gap into a kept promise, and it's corpus-level, not protocol.
 
 ---
 
@@ -91,7 +91,7 @@ Out-of-band notification isn't built yet (a 1.x item), so an instance's messages
 
 - **The method is one command:**
   ```bash
-  python admin.py --config stasima.toml backup /path/to/destination
+  stasima-admin --config stasima.toml backup /path/to/destination
   ```
   It captures everything that is truth, correctly, every time: a full-ref git mirror (heads + perspectives + proposals + **state tags**, verified after push), a consistent snapshot of `audit.sqlite` (safe against a live server), your config, and the TOTP secret. Repeatable and incremental — point it at a synced folder, an external drive, or a network share, on a cadence.
 - **If you push the git repo to a remote by hand** (e.g. a private mirror), you must name all three namespaces — git's defaults silently drop two of them, and a partial refspec silently drops the state tags:

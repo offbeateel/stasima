@@ -11,7 +11,7 @@ practitioner can see exactly what's left to write.
 This is the suite-vs-practice split made literal: the machinery is the suite's voice; the slots are
 the practice's, carried as corpus rather than code.
 """
-from entries import parse_entry
+from .entries import parse_entry
 
 MACHINERY = """\
 # Stasima — how this works

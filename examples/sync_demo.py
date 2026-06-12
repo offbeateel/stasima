@@ -11,7 +11,7 @@ import sys
 import tempfile
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))  # import modules from the parent
-from local_capstore import LocalCapStore
+from stasima.local_capstore import LocalCapStore
 
 KEPT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "demo.git")  # the archived demo repo
 work = tempfile.mkdtemp(prefix="capstore-sync-")

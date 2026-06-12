@@ -13,11 +13,11 @@ import tempfile
 import anyio
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from local_capstore import LocalCapStore
-from map_index import SqliteMapIndex, StubEmbedder, index_entry
-from audit_log import SqliteAuditLog
-from authz import DefaultPolicy
-from cap_server import build_server, compose_entry, reindex_from_git
+from stasima.local_capstore import LocalCapStore
+from stasima.map_index import SqliteMapIndex, StubEmbedder, index_entry
+from stasima.audit_log import SqliteAuditLog
+from stasima.authz import DefaultPolicy
+from stasima.cap_server import build_server, compose_entry, reindex_from_git
 from mcp.shared.memory import create_connected_server_and_client_session as connect
 
 

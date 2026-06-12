@@ -9,9 +9,9 @@ import sys
 import tempfile
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import admin
-from local_capstore import LocalCapStore
-from orientation import build_orientation
+from stasima import admin
+from stasima.local_capstore import LocalCapStore
+from stasima.orientation import build_orientation
 
 work = tempfile.mkdtemp(prefix="cap-bootstrap-")
 seed = os.path.join(work, "seed")

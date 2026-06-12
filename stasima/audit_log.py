@@ -24,7 +24,7 @@ from abc import ABC, abstractmethod
 from datetime import datetime, timezone
 from typing import Optional
 
-from local_capstore import Identity, PERSP_PREFIX, PROP_PREFIX
+from .local_capstore import Identity, PERSP_PREFIX, PROP_PREFIX
 
 GENESIS = "0" * 64
 ANCHOR_REF = "refs/cap/audit-anchor"

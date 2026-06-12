@@ -14,11 +14,11 @@ import sys
 import tempfile
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from local_capstore import LocalCapStore, Identity, Approval
-from map_index import SqliteMapIndex, StubEmbedder
-from audit_log import SqliteAuditLog
-from entries import compose_entry
-from cap_server import land_and_record, canon_seq, seq_display
+from stasima.local_capstore import LocalCapStore, Identity, Approval
+from stasima.map_index import SqliteMapIndex, StubEmbedder
+from stasima.audit_log import SqliteAuditLog
+from stasima.entries import compose_entry
+from stasima.cap_server import land_and_record, canon_seq, seq_display
 
 CANON = "refs/heads/main"
 def prop(p): return f"refs/cap/proposals/{p}"

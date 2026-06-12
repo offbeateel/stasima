@@ -10,9 +10,9 @@ import sys
 import tempfile
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from local_capstore import LocalCapStore, Identity, Approval
-from map_index import SqliteMapIndex, StubEmbedder
-from cap_server import compose_entry, reindex_from_git
+from stasima.local_capstore import LocalCapStore, Identity, Approval
+from stasima.map_index import SqliteMapIndex, StubEmbedder
+from stasima.cap_server import compose_entry, reindex_from_git
 
 CANON = "refs/heads/main"
 def persp(i): return f"refs/cap/perspectives/{i}"

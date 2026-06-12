@@ -39,18 +39,18 @@ Identity is a name (recorded as provenance, not proven); v1 assumes a single pra
 
 | file | what it is |
 |---|---|
-| `local_capstore.py` | the git-backed store (reads, commits, the two-phase human-gated merge, remote sync; owns the ref layout) |
-| `canon.py` | the canon lifecycle: state sequence, log-entry validation, landing, index rebuild |
-| `entries.py` | entry serialization (YAML front-matter + body) |
-| `map_index.py` | the search index (SQLite + an embedder interface) — a rebuildable cache |
-| `audit_log.py` | the hash-chained operation log — a source of truth |
-| `authz.py` | the authorization policy seam (`DefaultPolicy`) |
-| `orientation.py` | the arrival-orientation framework (machinery + your slots) |
-| `airlock.py` | TOTP two-phase remote approval (approving through a relaying instance) |
-| `sup` tools (in `cap_server.py`) | per-instance state ↔ canon coherence |
-| `cap_server.py` | the MCP server: the 28 tools, plus `server_from_config` / `land_and_record` |
-| `config.py` | the typed deployment config (`stasima.toml`) |
-| `admin.py` | the practitioner CLI — what *you* run |
+| `stasima/local_capstore.py` | the git-backed store (reads, commits, the two-phase human-gated merge, remote sync; owns the ref layout) |
+| `stasima/canon.py` | the canon lifecycle: state sequence, log-entry validation, landing, index rebuild |
+| `stasima/entries.py` | entry serialization (YAML front-matter + body) |
+| `stasima/map_index.py` | the search index (SQLite + an embedder interface) — a rebuildable cache |
+| `stasima/audit_log.py` | the hash-chained operation log — a source of truth |
+| `stasima/authz.py` | the authorization policy seam (`DefaultPolicy`) |
+| `stasima/orientation.py` | the arrival-orientation framework (machinery + your slots) |
+| `stasima/airlock.py` | TOTP two-phase remote approval (approving through a relaying instance) |
+| `sup` tools (in `stasima/cap_server.py`) | per-instance state ↔ canon coherence |
+| `stasima/cap_server.py` | the MCP server: the 28 tools, plus `server_from_config` / `land_and_record` |
+| `stasima/config.py` | the typed deployment config (`stasima.toml`) |
+| `stasima/admin.py` | the practitioner CLI (`stasima-admin`) — what *you* run |
 | `*_test.py` | the test suite — run all with `python run_tests.py`, or any one directly |
 | `embeddings-build-guide.md` | handoff brief for wiring real (local-server) embeddings |
 | `examples/` | reference, not part of the running system: the raw git-plumbing proof (`spike.sh`), the off-machine-mirror demo (`sync_demo.py`), and a populated sample repo (`demo.git`) |

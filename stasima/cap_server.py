@@ -13,16 +13,16 @@ import os
 
 from mcp.server.fastmcp import FastMCP
 
-from local_capstore import (LocalCapStore, Identity, PathNotFound, RefNotFound, StaleRef,
+from .local_capstore import (LocalCapStore, Identity, PathNotFound, RefNotFound, StaleRef,
                             CapStoreError, PERSP_PREFIX as PERSP, PROP_PREFIX as PROP)
-from map_index import SqliteMapIndex, StubEmbedder, LocalServerEmbedder, index_entry
-from audit_log import SqliteAuditLog
-from authz import Denied, DefaultPolicy
-from entries import compose_entry, parse_entry          # shared content-model serialization
-from orientation import build_orientation               # practice-agnostic machinery + practice slots
-from airlock import Airlock                             # TOTP two-phase remote approval
+from .map_index import SqliteMapIndex, StubEmbedder, LocalServerEmbedder, index_entry
+from .audit_log import SqliteAuditLog
+from .authz import Denied, DefaultPolicy
+from .entries import compose_entry, parse_entry          # shared content-model serialization
+from .orientation import build_orientation               # practice-agnostic machinery + practice slots
+from .airlock import Airlock                             # TOTP two-phase remote approval
 # canon lifecycle (re-exported here for callers/tests that import via the server module)
-from canon import (LOG_DIR, CHAT_ERA_FREEZE, canon_seq, seq_display, reindex_from_git,
+from .canon import (LOG_DIR, CHAT_ERA_FREEZE, canon_seq, seq_display, reindex_from_git,
                    land_and_record, validate_log_entry, validate_log_entry as _validate_log_entry)
 
 
@@ -452,8 +452,9 @@ def server_from_config(cfg) -> FastMCP:
                         http_host=cfg.http_host, http_port=cfg.http_port)
 
 
-if __name__ == "__main__":
-    from config import Config
+def main() -> None:
+    """Console entry point (`stasima` / `python -m stasima.cap_server`)."""
+    from .config import Config
     _cfg = Config.load(os.environ.get("STASIMA_CONFIG"))
     _srv = server_from_config(_cfg)
     if _cfg.transport == "http":
@@ -463,3 +464,7 @@ if __name__ == "__main__":
         _srv.run(transport="streamable-http")
     else:
         _srv.run()   # stdio: the connecting client spawns this process
+
+
+if __name__ == "__main__":
+    main()

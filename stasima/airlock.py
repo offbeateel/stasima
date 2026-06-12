@@ -36,7 +36,7 @@ import os
 import struct
 import time
 
-from local_capstore import MergePreparation, MergeSummary, Approval, PROP_PREFIX as PROP
+from .local_capstore import MergePreparation, MergeSummary, Approval, PROP_PREFIX as PROP
 
 STEP = 30                      # RFC 6238 time step (seconds)
 DIGITS = 6

@@ -55,7 +55,7 @@ Everything else in the Stasima is built and tested. Search runs today on `StubEm
    embed_dim     = 768          # MUST equal the model's actual output dim
    ```
 
-4. **Re-embed the corpus:** `python admin.py --config stasima.toml reindex`. This rebuilds the index from git using the real model.
+4. **Re-embed the corpus:** `stasima-admin --config stasima.toml reindex`. This rebuilds the index from git using the real model.
 
 5. **Acceptance:** run `map_search` with a query that's *semantically* (not lexically) related to an entry and confirm it ranks the entry highly. The clearest demonstration is a query that shares **no words** with the target entry but means the same thing — the stub ranks that near zero; a real model ranks it near the top.
 

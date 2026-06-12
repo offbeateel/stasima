@@ -23,12 +23,12 @@ import tempfile
 import anyio
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from local_capstore import LocalCapStore
-from map_index import SqliteMapIndex, StubEmbedder, index_entry
-from audit_log import SqliteAuditLog
-from authz import DefaultPolicy
-from airlock import Airlock, AirlockError, totp_at, verify_code, generate_secret
-from cap_server import build_server, compose_entry, land_and_record, _validate_log_entry, canon_seq
+from stasima.local_capstore import LocalCapStore
+from stasima.map_index import SqliteMapIndex, StubEmbedder, index_entry
+from stasima.audit_log import SqliteAuditLog
+from stasima.authz import DefaultPolicy
+from stasima.airlock import Airlock, AirlockError, totp_at, verify_code, generate_secret
+from stasima.cap_server import build_server, compose_entry, land_and_record, _validate_log_entry, canon_seq
 from mcp.shared.memory import create_connected_server_and_client_session as connect
 
 CANON = "refs/heads/main"

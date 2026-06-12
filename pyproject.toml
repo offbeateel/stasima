@@ -1,0 +1,42 @@
+# SPDX-License-Identifier: Apache-2.0
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "stasima"
+version = "1.0.0"
+description = "A server letting multiple AI instances share one durable, version-controlled body of knowledge, with a human practitioner as the gate to shared truth."
+readme = "README.md"
+requires-python = ">=3.12"
+license = "Apache-2.0"
+license-files = ["LICENSE", "NOTICE"]
+authors = [{ name = "Antistrophos" }]
+keywords = ["mcp", "knowledge-base", "git", "ai", "agents"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: Software Development :: Version Control :: Git",
+]
+dependencies = ["mcp>=1.10"]
+
+[project.optional-dependencies]
+qr = ["qrcode"]   # scannable QR during airlock TOTP provisioning
+
+[project.scripts]
+stasima = "stasima.cap_server:main"          # the MCP server (STASIMA_CONFIG points at the toml)
+stasima-admin = "stasima.admin:main"         # the practitioner's cockpit
+
+[project.urls]
+Homepage = "https://github.com/antistrophos/stasima"
+Repository = "https://github.com/antistrophos/stasima"
+Issues = "https://github.com/antistrophos/stasima/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["stasima"]
+
+[tool.hatch.build.targets.sdist]
+include = ["stasima/", "LICENSE", "NOTICE", "BRAND.md", "README.md", "*.md", "stasima.toml.example"]
+exclude = ["examples/", "*_test.py", "brand/"]

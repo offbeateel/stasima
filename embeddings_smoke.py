@@ -15,10 +15,10 @@ import sys
 import tempfile
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from local_capstore import LocalCapStore
-from map_index import SqliteMapIndex, StubEmbedder, LocalServerEmbedder, cosine
-from entries import compose_entry
-from canon import reindex_from_git
+from stasima.local_capstore import LocalCapStore
+from stasima.map_index import SqliteMapIndex, StubEmbedder, LocalServerEmbedder, cosine
+from stasima.entries import compose_entry
+from stasima.canon import reindex_from_git
 
 BASE = sys.argv[1] if len(sys.argv) > 1 else "http://localhost:11434"
 MODEL = sys.argv[2] if len(sys.argv) > 2 else "nomic-embed-text"

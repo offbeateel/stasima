@@ -9,9 +9,9 @@ import sys
 import tempfile
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from local_capstore import LocalCapStore
-from entries import compose_entry
-from orientation import build_orientation, MACHINERY, SECTIONS
+from stasima.local_capstore import LocalCapStore
+from stasima.entries import compose_entry
+from stasima.orientation import build_orientation, MACHINERY, SECTIONS
 
 work = tempfile.mkdtemp(prefix="cap-orient-")
 gd = os.path.join(work, "stasima.git")

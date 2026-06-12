@@ -23,7 +23,7 @@ The design intent under everything: **a substrate that cannot silently lose what
    git = CONTENT TRUTH   DERIVED CACHE    OPERATION TRUTH
                          (rebuildable)    (append-only, git-anchored)
 
-  beside the stack:  admin.py (the practitioner's cockpit — not model-facing)
+  beside the stack:  stasima/admin.py (the practitioner's cockpit — not model-facing)
                      airlock.py (TOTP two-phase remote approval)
                      authz.py · orientation.py · entries.py · config.py
 ```
@@ -89,7 +89,7 @@ Be precise about what is and isn't defended:
 
 - **Identity is a declared name**, recorded as provenance — attribution, not attestation. The trust boundary is the MCP connection itself. The threat model is *loss, not forgery*: a single practitioner with cooperating instances. (Connection-bound identity and per-instance policy are the planned hardening when multi-user widens the boundary.)
 - **The authz seam** (`authz.py`) makes the structural lanes explicit — write only your own perspective, canon only via the gate, messages only via `imp_send` — and audit-logs denials. Defense in depth over what storage already enforces.
-- **The human gate** is structural: nothing the server or an instance can do advances `main`; `land` happens in the practitioner's cockpit (`admin.py`), out of band.
+- **The human gate** is structural: nothing the server or an instance can do advances `main`; `land` happens in the practitioner's cockpit (`stasima-admin`), out of band.
 - **The airlock** (`airlock.py`) extends the gate to remote/mediated approval: two TOTP codes, one to stage (freeze + prepare), one to land — with a review-time **floor that exceeds the worst-case code lifetime**, so a code harvested at staging is arithmetically dead by the earliest legal landing. Consume-once windows, strict ordering, content-binding to the staged oid; **aborting never costs a code** (charging presence-proof to decline would tilt incentives toward landing). Honest residual: the relaying instance's *display* of what was staged is not made trustworthy — content-binding makes swaps impossible and audit makes deception detectable; the console remains the stronger channel.
 - **The audit chain** is hash-linked, and its head is anchored into git at each land — tamper-*evidence* at this trust level, not tamper-proof; the replicated git substrate witnesses alterations of the SQLite log.
 
