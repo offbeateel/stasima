@@ -23,7 +23,7 @@ being mistaken for the original (and vice-versa).
   favicon form, in all provided color variants.
 - The **wordmark + logo lock-up** when used together.
 
-These marks are trademarks of **offbeateel** (™), whether or not formally
+These marks are trademarks of **Antistrophe** (™), whether or not formally
 registered.
 
 ## 2. The short version
@@ -125,9 +125,9 @@ When you do use the official logo (per §3):
 
 Two different things apply to the artwork:
 
-- **Copyright** in the logo image files is held by **offbeateel**. The files
+- **Copyright** in the logo image files is held by **Antistrophe**. The files
   are made available so you can use them *as described in these guidelines*.
-- **Trademark** rights in the name and mark are also held by **offbeateel**
+- **Trademark** rights in the name and mark are also held by **Antistrophe**
   and are governed by this document, independent of the software license.
 
 The open-source **software license grants no trademark rights**: the Apache
@@ -141,5 +141,5 @@ the project's issue tracker: **https://github.com/offbeateel/concordance/issues*
 
 ---
 
-*© 2026 offbeateel. "Concordance" and the Concordance logo are trademarks
-of offbeateel. Project repository: https://github.com/offbeateel/concordance.*
+*© 2026 Antistrophe. "Concordance" and the Concordance logo are trademarks
+of Antistrophe. Project repository: https://github.com/offbeateel/concordance.*

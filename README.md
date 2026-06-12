@@ -68,9 +68,11 @@ These live with the original practitioner's working tree, not in this repository
 
 ---
 
-## License & brand
+## License, brand & stewardship
 
-The code is **Apache-2.0** (see [LICENSE](LICENSE) and [NOTICE](NOTICE)). The **name and the trefoil logo are trademarks** — use of the marks is governed by [BRAND.md](BRAND.md), not by the software license (Apache 2.0 §6 excludes trademark rights). Short version: refer to and build on Concordance freely; published forks use their own name and mark.
+Concordance is stewarded by **Antistrophe** — the project's keeper, in the way Canonical stewards Ubuntu.
+
+The code is **Apache-2.0** (see [LICENSE](LICENSE) and [NOTICE](NOTICE)). The **name and the trefoil logo are trademarks of Antistrophe** — use of the marks is governed by [BRAND.md](BRAND.md), not by the software license (Apache 2.0 §6 excludes trademark rights). Short version: refer to and build on Concordance freely; published forks use their own name and mark.
 
 ---
 
