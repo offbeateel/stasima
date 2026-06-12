@@ -41,7 +41,7 @@ assert ok2 is False and bad2 == 1
 # ============================================================ 2. reconcile from git
 print("\n== reconcile (git-first-then-audit recovery) ==")
 work = tempfile.mkdtemp(prefix="cap-audit-")
-gd = os.path.join(work, "concordance.git")
+gd = os.path.join(work, "stasima.git")
 sp.run(["git", "init", "--bare", "-q", gd], check=True)
 store = LocalCapStore(gd, approvers={"practitioner"})
 

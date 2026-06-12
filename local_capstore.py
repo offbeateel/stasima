@@ -96,8 +96,8 @@ class LocalCapStore:
         *,
         approvers: set[str],
         canon_ref: str = "refs/heads/main",
-        committer: tuple[str, str] = ("capstore", "capstore@concordance.local"),
-        author_domain: str = "concordance.local",
+        committer: tuple[str, str] = ("capstore", "capstore@stasima.local"),
+        author_domain: str = "stasima.local",
         git_bin: str = "git",
     ):
         self.git_dir = git_dir
@@ -381,7 +381,7 @@ class LocalCapStore:
         self._git("remote", "set-url" if rc == 0 else "add", name, url)
 
     def push_all(self, remote: str = "origin", *, prune: bool = False) -> dict:
-        """Push every head + concordance ref to the remote, then verify nothing was dropped.
+        """Push every head + stasima ref to the remote, then verify nothing was dropped.
         Non-fast-forward pushes fail (append-only is preserved). `prune` mirrors deletions
         within these namespaces only — off by default for an append-only store."""
         args = ["push"] + (["--prune"] if prune else []) + [remote] + self.SYNC_REFSPECS
@@ -417,11 +417,11 @@ if __name__ == "__main__":
     import subprocess as sp
 
     work = tempfile.mkdtemp(prefix="capstore-demo-")
-    gd = os.path.join(work, "concordance.git")
+    gd = os.path.join(work, "stasima.git")
     sp.run(["git", "init", "--bare", "-q", gd], check=True)
     store = LocalCapStore(gd, approvers={"practitioner"})
 
-    store.bootstrap_canon({"canon/orientation.md": b"Welcome to the Concordance.\n"}, "Bootstrap canon")
+    store.bootstrap_canon({"canon/orientation.md": b"Welcome to the Stasima.\n"}, "Bootstrap canon")
     print("canon bootstrapped:", store.resolve_ref("refs/heads/main")[:10])
 
     persp = "refs/concordance/perspectives/research-2"

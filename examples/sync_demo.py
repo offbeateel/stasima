@@ -33,7 +33,7 @@ def remote_refs():
 store = LocalCapStore(source, approvers={"practitioner"})
 print("source refs:        ", sorted(r.name for r in store.list_refs()))
 
-# --- the footgun: a naive 'push main' silently drops the concordance refs ---
+# --- the footgun: a naive 'push main' silently drops the stasima refs ---
 sp.run(["git", f"--git-dir={source}", "push", "-q", remote, "refs/heads/main:refs/heads/main"], check=True)
 print("after naive push:   ", remote_refs(), " <-- perspectives & proposals MISSING")
 

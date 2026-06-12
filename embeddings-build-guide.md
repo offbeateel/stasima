@@ -20,13 +20,13 @@ Connect the already-written `LocalServerEmbedder` to a running local embedding m
 
 ## Why this is the one piece left
 
-Everything else in the Concordance is built and tested. Search runs today on `StubEmbedder` — a deterministic bag-of-hashed-tokens stand-in that's really *lexical* similarity. It's fine for exercising the plumbing but can't tell "durability" relates to "never losing committed work" unless the words overlap. Real embeddings fix that. The component to drive them (`LocalServerEmbedder`) exists and is wired through config; it has simply never been run against a live model server (that needed a capable machine — presumably the one you're on now).
+Everything else in the Stasima is built and tested. Search runs today on `StubEmbedder` — a deterministic bag-of-hashed-tokens stand-in that's really *lexical* similarity. It's fine for exercising the plumbing but can't tell "durability" relates to "never losing committed work" unless the words overlap. Real embeddings fix that. The component to drive them (`LocalServerEmbedder`) exists and is wired through config; it has simply never been run against a live model server (that needed a capable machine — presumably the one you're on now).
 
 ## What already exists (don't rebuild it)
 
 - **`LocalServerEmbedder`** in `map_index.py` — calls an OpenAI-compatible `POST /v1/embeddings` (LM Studio, Ollama, etc.), returns one vector per input, **normalized** (see "the normalization contract" below). Has `model_id` and `dim` attributes.
 - **The `Embedder` ABC** — `embed(texts: list[str]) -> list[list[float]]`. The index keys ranking off `cosine()`, which is a **dot product**, so embedders must return **unit-length vectors**.
-- **Config wiring** — `concordance.toml` has `embed_backend` (`"stub"` | `"local-server"`), `embed_url`, `embed_model`, `embed_dim`. `cap_server.components_from_config` already builds `LocalServerEmbedder` when `embed_backend = "local-server"`. You shouldn't need to touch the wiring — only the config and (maybe) the embedder's request/response handling if your server differs.
+- **Config wiring** — `stasima.toml` has `embed_backend` (`"stub"` | `"local-server"`), `embed_url`, `embed_model`, `embed_dim`. `cap_server.components_from_config` already builds `LocalServerEmbedder` when `embed_backend = "local-server"`. You shouldn't need to touch the wiring — only the config and (maybe) the embedder's request/response handling if your server differs.
 
 ## Steps
 
@@ -47,7 +47,7 @@ Everything else in the Concordance is built and tested. Search runs today on `St
    ```
    If that last assertion holds, the model is producing real semantics and the wire format matches.
 
-3. **Point the config at it** (`concordance.toml`):
+3. **Point the config at it** (`stasima.toml`):
    ```toml
    embed_backend = "local-server"
    embed_url     = "http://localhost:11434"
@@ -55,7 +55,7 @@ Everything else in the Concordance is built and tested. Search runs today on `St
    embed_dim     = 768          # MUST equal the model's actual output dim
    ```
 
-4. **Re-embed the corpus:** `python admin.py --config concordance.toml reindex`. This rebuilds the index from git using the real model.
+4. **Re-embed the corpus:** `python admin.py --config stasima.toml reindex`. This rebuilds the index from git using the real model.
 
 5. **Acceptance:** run `map_search` with a query that's *semantically* (not lexically) related to an entry and confirm it ranks the entry highly. The clearest demonstration is a query that shares **no words** with the target entry but means the same thing — the stub ranks that near zero; a real model ranks it near the top.
 

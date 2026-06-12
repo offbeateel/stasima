@@ -2,14 +2,14 @@
 __pycache__/
 *.py[cod]
 
-# Local data and config — keep concordance.toml.example, not your live copies.
+# Local data and config — keep stasima.toml.example, not your live copies.
 *.sqlite           # map_index.sqlite (rebuildable cache) and any audit.sqlite placed here
-concordance.toml   # your live deployment config (contains machine paths)
+stasima.toml   # your live deployment config (contains machine paths)
 totp.secret        # the airlock TOTP secret — server-side only, NEVER in git
 *.secret
 
 # A live deployment repo, if you keep it inside this folder (git_dir is configurable).
-/concordance.git/
+/stasima.git/
 
 # The archived demo bare-repo is a sample, not source.
 examples/demo.git/

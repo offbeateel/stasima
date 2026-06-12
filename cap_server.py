@@ -1,5 +1,5 @@
 """
-Concordance CAP server — MCP protocol surface over LocalCapStore + the MAP index + the audit log.
+Stasima CAP server — MCP protocol surface over LocalCapStore + the MAP index + the audit log.
 
 Tools give an instance: orient -> author (with envelopes, indexed inline, audit-logged) -> search
 -> review its own trail -> propose -> check status -> message peers (read-state in the audit log).
@@ -28,7 +28,7 @@ from canon import (LOG_DIR, CHAT_ERA_FREEZE, canon_seq, seq_display, reindex_fro
 def build_server(store: LocalCapStore, index=None, embedder=None, audit=None, authz=None, airlock=None, *,
                  orientation_text: str = None, orientation_base: str = "technical/orientation",
                  seq_origin: int = CHAT_ERA_FREEZE, deployment_name: str = "") -> FastMCP:
-    mcp = FastMCP("concordance")
+    mcp = FastMCP("stasima")
     has_map = index is not None and embedder is not None
 
     def persp_ref(iid): return PERSP + iid
@@ -124,7 +124,7 @@ def build_server(store: LocalCapStore, index=None, embedder=None, audit=None, au
     @mcp.tool()
     def announce(instance_id: str) -> dict:
         """Announce presence; returns orientation + current canon head + your perspective tip."""
-        home = deployment_name or "the Concordance"
+        home = deployment_name or "Stasima"
         return {"welcome": f"Welcome to {home}, {instance_id}.", "orientation": _orientation(),
                 "canon_head": store.resolve_ref(store.canon_ref),
                 "your_perspective_tip": store.resolve_ref(persp_ref(instance_id)),
@@ -451,4 +451,4 @@ def server_from_config(cfg) -> FastMCP:
 
 if __name__ == "__main__":
     from config import Config
-    server_from_config(Config.load(os.environ.get("CONCORDANCE_CONFIG"))).run()
+    server_from_config(Config.load(os.environ.get("STASIMA_CONFIG"))).run()

@@ -50,7 +50,7 @@ def generate_secret() -> str:
     return base64.b32encode(os.urandom(20)).decode()
 
 
-def otpauth_uri(secret: str, label: str = "Concordance:practitioner", issuer: str = "Concordance") -> str:
+def otpauth_uri(secret: str, label: str = "Stasima:practitioner", issuer: str = "Stasima") -> str:
     return (f"otpauth://totp/{label}?secret={secret}&issuer={issuer}"
             f"&algorithm=SHA1&digits={DIGITS}&period={STEP}")
 

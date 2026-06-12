@@ -18,7 +18,7 @@ def persp(i): return f"refs/concordance/perspectives/{i}"
 def prop(p): return f"refs/concordance/proposals/{p}"
 
 work = tempfile.mkdtemp(prefix="cap-reindex-")
-gd = os.path.join(work, "concordance.git")
+gd = os.path.join(work, "stasima.git")
 sp.run(["git", "init", "--bare", "-q", gd], check=True)
 store = LocalCapStore(gd, approvers={"practitioner"})
 index, emb = SqliteMapIndex(":memory:"), StubEmbedder(dim=64)

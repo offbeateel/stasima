@@ -2,7 +2,7 @@
 Admin CLI — practitioner-side maintenance + promotion. NOT model-facing: these are operator ops,
 and `land` (promotion to canon) IS the human gate, performed here out of band.
 
-    concordance-admin --config concordance.toml <command>
+    stasima-admin --config stasima.toml <command>
 
       bootstrap <dir>     seed an EMPTY canon from a folder of .md entries (one-time)
       totp-provision      generate the airlock TOTP secret (prints the otpauth:// URI)
@@ -63,7 +63,7 @@ def run(args) -> dict:
     store, index, embedder, audit, authz, airlock = components_from_config(cfg)
 
     if args.cmd == "totp-provision":
-        issuer = cfg.deployment_name or "Concordance"
+        issuer = cfg.deployment_name or "Stasima"
         uri = lambda s: otpauth_uri(s, label=f"{issuer}:practitioner", issuer=issuer)
         path = cfg.resolved_airlock_secret()
         if os.path.exists(path) and not args.force:
@@ -166,7 +166,7 @@ def run(args) -> dict:
         import shutil
         import sqlite3 as _sq
         os.makedirs(args.dest, exist_ok=True)
-        mirror = os.path.join(args.dest, "concordance-mirror.git")
+        mirror = os.path.join(args.dest, "stasima-mirror.git")
         if not os.path.isdir(os.path.join(mirror, "objects")):
             sp.run(["git", "init", "--bare", "-q", mirror], check=True)
         store.set_remote("backup", mirror)
@@ -175,7 +175,7 @@ def run(args) -> dict:
         dst = _sq.connect(audit_copy)
         audit.conn.backup(dst)
         dst.close()
-        copied = ["concordance-mirror.git", "audit.sqlite"]
+        copied = ["stasima-mirror.git", "audit.sqlite"]
         for src in (args.config, cfg.resolved_airlock_secret()):
             if src and os.path.exists(src):
                 shutil.copy2(src, args.dest)
@@ -224,8 +224,8 @@ def run(args) -> dict:
 
 
 def build_parser() -> argparse.ArgumentParser:
-    ap = argparse.ArgumentParser(prog="concordance-admin", description="Concordance maintenance + promotion")
-    ap.add_argument("--config", default=os.environ.get("CONCORDANCE_CONFIG"))
+    ap = argparse.ArgumentParser(prog="stasima-admin", description="Stasima maintenance + promotion")
+    ap.add_argument("--config", default=os.environ.get("STASIMA_CONFIG"))
     sub = ap.add_subparsers(dest="cmd", required=True)
     for c in ("status", "reindex", "reconcile", "verify", "anchor"):
         sub.add_parser(c)

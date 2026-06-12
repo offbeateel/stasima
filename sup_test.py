@@ -44,7 +44,7 @@ def err(res):
 
 def setup():
     work = tempfile.mkdtemp(prefix="cap-sup-")
-    gd = os.path.join(work, "concordance.git")
+    gd = os.path.join(work, "stasima.git")
     sp.run(["git", "init", "--bare", "-q", gd], check=True)
     store = LocalCapStore(gd, approvers={"practitioner"})
     index, emb, audit = SqliteMapIndex(":memory:"), StubEmbedder(dim=64), SqliteAuditLog(":memory:")

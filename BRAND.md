@@ -1,8 +1,8 @@
-# Concordance Brand & Trademark Guidelines
+# Stasima Brand & Trademark Guidelines
 
-The **Concordance** source code is open and free to use under the terms of the
+The **Stasima** source code is open and free to use under the terms of the
 **Apache License, Version 2.0** (SPDX: `Apache-2.0`; see `LICENSE`). The
-**Concordance name and logo are different** — they are the identity of the
+**Stasima name and logo are different** — they are the identity of the
 project, and these guidelines govern how they may be used.
 
 The goal is simple: keep the software free for everyone to use, study, modify,
@@ -17,7 +17,7 @@ being mistaken for the original (and vice-versa).
 
 ## 1. What these guidelines cover
 
-- The **name** "Concordance" (and any confusingly similar variations) as used to
+- The **name** "Stasima" (and any confusingly similar variations) as used to
   identify this project.
 - The **logo / emblem** — the cassette-and-trefoil mark and its simplified
   favicon form, in all provided color variants.
@@ -29,13 +29,13 @@ registered.
 ## 2. The short version
 
 - ✅ You may use the name and unaltered logo to **refer to**, **link to**, or
-  **say you build on / are compatible with** Concordance.
+  **say you build on / are compatible with** Stasima.
 - ✅ You may redistribute the logo files **with the project** (e.g. in docs, in a
   bundled copy of the software).
 - ⚠️ You may **not** use the name or logo in a way that suggests your product,
-  fork, or service **is** Concordance or is **endorsed by** it.
+  fork, or service **is** Stasima or is **endorsed by** it.
 - ⚠️ A **fork** that is distributed to others should use **its own name and its
-  own logo**, not Concordance's.
+  own logo**, not Stasima's.
 - ⚠️ Don't **alter** the logo (recolor, distort, redraw) or use it as the icon
   for a different product.
 
@@ -44,8 +44,8 @@ registered.
 - Referring to the project by name in articles, talks, tutorials, documentation,
   README files, and academic work.
 - Stating factually that your software **uses**, **integrates with**,
-  **extends**, or **is compatible with** Concordance — e.g. *"Plugin for
-  Concordance"* or *"Built on Concordance"* — provided it's clear your project is
+  **extends**, or **is compatible with** Stasima — e.g. *"Plugin for
+  Stasima"* or *"Built on Stasima"* — provided it's clear your project is
   a separate thing.
 - Linking to the project's website or repository using the unmodified logo.
 - Including the logo in a slide deck, screenshot, or comparison where you're
@@ -61,14 +61,14 @@ registered.
 - Any use that could imply **official status, sponsorship, or endorsement**
   ("official", "certified", "powered by" in a branding sense).
 - Using the marks in a **paid or commercial offering** built around the project
-  (e.g. a hosted "Concordance" service).
+  (e.g. a hosted "Stasima" service).
 
-If in doubt, ask: the project's issue tracker: **https://github.com/offbeateel/concordance/issues**.
+If in doubt, ask: the project's issue tracker: **https://github.com/offbeateel/stasima/issues**.
 
 ## 5. Uses that are not permitted
 
 - Presenting a **modified version or fork** of the software under the
-  Concordance name or logo. Forks must rebrand (see §6).
+  Stasima name or logo. Forks must rebrand (see §6).
 - **Altering** the logo: changing its colors, proportions, orientation,
   redrawing it, adding effects, or combining it with other marks.
 - Registering the name or a confusingly similar mark/domain as your own
@@ -76,7 +76,7 @@ If in doubt, ask: the project's issue tracker: **https://github.com/offbeateel/c
 
 Note: this section is about preventing **confusion over source or endorsement**,
 not about controlling opinion. Honest commentary, criticism, review, and parody
-that refer to Concordance — including uses of the name and logo reasonably needed
+that refer to Stasima — including uses of the name and logo reasonably needed
 to do so — are fine and welcome.
 
 ## 6. Forks and derivatives
@@ -84,11 +84,11 @@ to do so — are fine and welcome.
 You are absolutely free to fork the code — that's the point of open source. But a
 fork that you **distribute to others** must:
 
-1. **Use a different name** that is not confusingly similar to "Concordance."
-2. **Use a different logo** (you may not use the Concordance mark as your fork's
+1. **Use a different name** that is not confusingly similar to "Stasima."
+2. **Use a different logo** (you may not use the Stasima mark as your fork's
    identity).
 3. You **may** state factually that your project **is derived from** or **based
-   on** Concordance.
+   on** Stasima.
 
 Private forks and pull-request branches don't need to rebrand — this only applies
 to forks you publish under their own identity.
@@ -137,9 +137,9 @@ exactly why an open code license and a protected brand can coexist.
 ## 9. Questions
 
 For anything not covered here, or to request permission, contact
-the project's issue tracker: **https://github.com/offbeateel/concordance/issues**. We're happy to say yes to reasonable community uses.
+the project's issue tracker: **https://github.com/offbeateel/stasima/issues**. We're happy to say yes to reasonable community uses.
 
 ---
 
-*© 2026 Antistrophe. "Concordance" and the Concordance logo are trademarks
-of Antistrophe. Project repository: https://github.com/offbeateel/concordance.*
+*© 2026 Antistrophe. "Stasima" and the Stasima logo are trademarks
+of Antistrophe. Project repository: https://github.com/offbeateel/stasima.*

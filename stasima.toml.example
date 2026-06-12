@@ -1,8 +1,8 @@
-# Concordance v1 — deployment config (flat TOML). Copy to concordance.toml and edit.
-# Point the server at it with CONCORDANCE_CONFIG=/path/to/concordance.toml.
-# Any CONCORDANCE_* env var overrides the matching key here.
+# Stasima v1 — deployment config (flat TOML). Copy to stasima.toml and edit.
+# Point the server at it with STASIMA_CONFIG=/path/to/stasima.toml.
+# Any STASIMA_* env var overrides the matching key here.
 
-git_dir   = "/path/to/concordance.git"   # absolute path to the bare repo (Windows: "C:\\path\\to\\concordance.git")
+git_dir   = "/path/to/stasima.git"   # absolute path to the bare repo (Windows: "C:\\path\\to\\stasima.git")
 deployment_name = ""                     # your deployment's own name (shows in arrival, orientation, authenticator)
 approvers = ["practitioner"]          # whose review lands canon
 canon_ref = "refs/heads/main"
@@ -12,7 +12,7 @@ map_db   = ""                         # throwaway cache — rebuilds via reindex
 audit_db = ""                         # TRUTH — back this up like the repo
 
 committer_name  = "capstore"          # the bot identity on commits (provenance is the author trailer)
-committer_email = "capstore@concordance.local"
+committer_email = "capstore@stasima.local"
 
 # Embeddings: "stub" (offline dev, lexical proxy) or "local-server" (LM Studio / Ollama).
 embed_backend = "stub"

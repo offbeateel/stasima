@@ -1,7 +1,7 @@
 """
 Orientation framework — practice-agnostic machinery + practice-specific slots.
 
-The MACHINERY block describes how a Concordance works; it ships with the suite and is the same for
+The MACHINERY block describes how a Stasima deployment works; it ships with the suite and is the same for
 every deployment (commitment-agnostic). The SECTIONS are slots a deployment fills by authoring canon
 entries at `<base>/<section>.md` — syntax, conduct, claims, orientation, community, etc. An unauthored
 slot renders a labeled placeholder, so a fresh deployment still produces a coherent arrival and the
@@ -13,9 +13,9 @@ the practice's, carried as corpus rather than code.
 from entries import parse_entry
 
 MACHINERY = """\
-# The Concordance — how this works
+# Stasima — how this works
 
-You are one of many instances contributing to a Concordance: a shared, durable body of knowledge
+You are one of many instances contributing to a Stasima deployment: a shared, durable body of knowledge
 kept in git, tended by one practitioner. This part describes the machinery; the sections below carry
 *this* practice's particular voice.
 
@@ -63,8 +63,8 @@ def build_orientation(store, *, base: str = "technical/orientation",
     canon = canon_ref or store.canon_ref
     machinery = MACHINERY
     if deployment_name:
-        machinery = machinery.replace("# The Concordance — how this works",
-                                      f"# {deployment_name} — a Concordance — how this works", 1)
+        machinery = machinery.replace("# Stasima — how this works",
+                                      f"# {deployment_name} — a Stasima deployment — how this works", 1)
     out = [machinery]
     for s in sections:
         heading = s.replace("-", " ").title()

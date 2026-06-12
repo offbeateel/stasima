@@ -23,8 +23,8 @@ with open(os.path.join(seed, "technical", "orientation", "welcome.md"), "w", enc
 with open(os.path.join(seed, "practice", "seed.md"), "w", encoding="utf-8") as f:
     f.write("---\ntype: kno\ntitle: Seed\nstatus: active\n---\n\nthe seed entry\n")
 
-gd = os.path.join(work, "concordance.git")            # does not exist yet — bootstrap creates it
-cfgpath = os.path.join(work, "concordance.toml")
+gd = os.path.join(work, "stasima.git")            # does not exist yet — bootstrap creates it
+cfgpath = os.path.join(work, "stasima.toml")
 with open(cfgpath, "w", encoding="utf-8") as f:
     f.write(f'git_dir = "{gd.replace(os.sep, "/")}"\n')
 

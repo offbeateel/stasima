@@ -27,14 +27,14 @@ def write(text):
 
 
 # defaults, with the required git_dir from env
-cfg = Config.load(env={"CONCORDANCE_GIT_DIR": os.path.join(tempfile.gettempdir(), "x", "concordance.git")})
+cfg = Config.load(env={"STASIMA_GIT_DIR": os.path.join(tempfile.gettempdir(), "x", "stasima.git")})
 assert cfg.embed_backend == "stub" and cfg.approvers == ["practitioner"]
 assert cfg.resolved_map_db().endswith("map_index.sqlite")
 assert cfg.resolved_audit_db().endswith("audit.sqlite")
 print("defaults:        OK")
 
 # flat TOML file
-p = write('git_dir = "/srv/concordance.git"\n'
+p = write('git_dir = "/srv/stasima.git"\n'
           'approvers = ["alice", "bob"]\n'
           'embed_backend = "local-server"\n'
           'embed_url = "http://localhost:1234"\n'
@@ -44,7 +44,7 @@ assert cfg2.approvers == ["alice", "bob"] and cfg2.embed_backend == "local-serve
 print("toml load:       OK")
 
 # env overrides the file
-cfg3 = Config.load(p, env={"CONCORDANCE_EMBED_MODEL": "bge-m3", "CONCORDANCE_APPROVERS": "carol,dave"})
+cfg3 = Config.load(p, env={"STASIMA_EMBED_MODEL": "bge-m3", "STASIMA_APPROVERS": "carol,dave"})
 assert cfg3.embed_model == "bge-m3" and cfg3.approvers == ["carol", "dave"]
 print("env override:    OK")
 
@@ -57,10 +57,10 @@ print("validation:      OK")
 
 # assembly: a real server from a config
 work = tempfile.mkdtemp()
-gd = os.path.join(work, "concordance.git")
+gd = os.path.join(work, "stasima.git")
 sp.run(["git", "init", "--bare", "-q", gd], check=True)
 from cap_server import server_from_config
-mcp = server_from_config(Config.load(env={"CONCORDANCE_GIT_DIR": gd}))
+mcp = server_from_config(Config.load(env={"STASIMA_GIT_DIR": gd}))
 assert mcp is not None
 print("assembly:        OK")
 

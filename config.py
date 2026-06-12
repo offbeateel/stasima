@@ -19,27 +19,27 @@ class ConfigError(Exception):
 
 # env var -> field name (env overrides the file; both override defaults)
 _ENV = {
-    "CONCORDANCE_GIT_DIR": "git_dir",
-    "CONCORDANCE_APPROVERS": "approvers",
-    "CONCORDANCE_CANON_REF": "canon_ref",
-    "CONCORDANCE_MAP_DB": "map_db",
-    "CONCORDANCE_AUDIT_DB": "audit_db",
-    "CONCORDANCE_EMBED_URL": "embed_url",
-    "CONCORDANCE_EMBED_MODEL": "embed_model",
-    "CONCORDANCE_EMBED_DIM": "embed_dim",
+    "STASIMA_GIT_DIR": "git_dir",
+    "STASIMA_APPROVERS": "approvers",
+    "STASIMA_CANON_REF": "canon_ref",
+    "STASIMA_MAP_DB": "map_db",
+    "STASIMA_AUDIT_DB": "audit_db",
+    "STASIMA_EMBED_URL": "embed_url",
+    "STASIMA_EMBED_MODEL": "embed_model",
+    "STASIMA_EMBED_DIM": "embed_dim",
 }
 
 
 @dataclass
 class Config:
     git_dir: str = ""
-    deployment_name: str = ""   # this deployment's own name (practice-side); blank = generic "Concordance"
+    deployment_name: str = ""   # this deployment's own name (practice-side); blank = generic "Stasima"
     approvers: list = field(default_factory=lambda: ["practitioner"])
     canon_ref: str = "refs/heads/main"
     map_db: str = ""        # blank -> derived beside git_dir (throwaway cache)
     audit_db: str = ""      # blank -> derived beside git_dir (TRUTH — back it up)
     committer_name: str = "capstore"
-    committer_email: str = "capstore@concordance.local"
+    committer_email: str = "capstore@stasima.local"
     embed_backend: str = "stub"            # "stub" | "local-server"
     embed_url: str = ""
     embed_model: str = "nomic-embed-text"
@@ -71,7 +71,7 @@ class Config:
         for ev, name in _ENV.items():
             if env.get(ev):
                 data[name] = env[ev]
-        if env.get("CONCORDANCE_EMBED_URL") and "embed_backend" not in data:
+        if env.get("STASIMA_EMBED_URL") and "embed_backend" not in data:
             data["embed_backend"] = "local-server"
         if isinstance(data.get("approvers"), str):
             data["approvers"] = [a.strip() for a in data["approvers"].split(",") if a.strip()]
@@ -91,7 +91,7 @@ class Config:
 
     def validate(self) -> None:
         if not self.git_dir:
-            raise ConfigError("git_dir is required (set it in the config file or CONCORDANCE_GIT_DIR)")
+            raise ConfigError("git_dir is required (set it in the config file or STASIMA_GIT_DIR)")
         if self.embed_backend not in ("stub", "local-server"):
             raise ConfigError(f"embed_backend must be 'stub' or 'local-server', got {self.embed_backend!r}")
         if self.embed_backend == "local-server" and not self.embed_url:

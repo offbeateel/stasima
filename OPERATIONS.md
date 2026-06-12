@@ -1,15 +1,15 @@
-# Concordance — Operations (day-to-day)
+# Stasima — Operations (day-to-day)
 
 The keep-open doc. Once you're set up ([SETUP.md](SETUP.md)), this is everything you need to run and tend a deployment. Run the server with:
 
 ```bash
-CONCORDANCE_CONFIG=/abs/path/to/concordance.toml python cap_server.py
+STASIMA_CONFIG=/abs/path/to/stasima.toml python cap_server.py
 ```
 
 All maintenance is through the admin CLI, which you point at the same config:
 
 ```bash
-python admin.py --config concordance.toml <command>
+python admin.py --config stasima.toml <command>
 ```
 
 ---
@@ -19,9 +19,9 @@ python admin.py --config concordance.toml <command>
 This is the part only you can do. An instance creates a proposal (`propose`); it sits as a branch until you decide. The loop:
 
 ```bash
-python admin.py --config concordance.toml status        # what's open
-python admin.py --config concordance.toml preview p-1   # dry-run: conflicts? what paths change?
-python admin.py --config concordance.toml land p-1 --by practitioner
+python admin.py --config stasima.toml status        # what's open
+python admin.py --config stasima.toml preview p-1   # dry-run: conflicts? what paths change?
+python admin.py --config stasima.toml land p-1 --by practitioner
 ```
 
 `land` is the human gate. It merges the proposal into canon, records it in the audit log, **tags the merge commit with the new state number** (`state/<seq>`), rebuilds the search index, and writes a tamper-evident checkpoint of the audit chain into git. After a land, every instance must reconcile with the new canon before its next proposal — that's by design (it keeps them current with shared truth).
@@ -34,7 +34,7 @@ If `preview` reports conflicts, don't land — the proposing instance needs to r
 
 When you're not at the console and approving *through an instance conversation* (e.g. on your phone), use the airlock instead: two TOTP codes from your authenticator app, one per phase, with enforced review time between them. The console `land` path is unchanged — at the console, the console is your out-of-band channel.
 
-**One-time setup:** `python admin.py --config concordance.toml totp-provision` — add the printed `otpauth://` URI to your authenticator app (every major app also accepts the `secret=` value via "enter a setup key", time-based, 6 digits). The secret stays server-side (never in git; it's gitignored). Then confirm the pairing with a code from your phone: `admin.py … totp-check 123456` — it verifies without consuming anything and diagnoses clock skew if the code doesn't match.
+**One-time setup:** `python admin.py --config stasima.toml totp-provision` — add the printed `otpauth://` URI to your authenticator app (every major app also accepts the `secret=` value via "enter a setup key", time-based, 6 digits). The secret stays server-side (never in git; it's gitignored). Then confirm the pairing with a code from your phone: `admin.py … totp-check 123456` — it verifies without consuming anything and diagnoses clock skew if the code doesn't match.
 
 **The flow** (you speak the codes; the instance relays them to `stage_approve` / `land_approve`):
 1. Give the instance your **current code** → it stages the proposal: frozen for review, merge prepared, and you're shown the staged oid, changed paths, and log-entry seq.
@@ -85,12 +85,12 @@ Out-of-band notification isn't built yet (a 1.x item), so an instance's messages
 
 - **The method is one command:**
   ```bash
-  python admin.py --config concordance.toml backup /path/to/destination
+  python admin.py --config stasima.toml backup /path/to/destination
   ```
   It captures everything that is truth, correctly, every time: a full-ref git mirror (heads + perspectives + proposals + **state tags**, verified after push), a consistent snapshot of `audit.sqlite` (safe against a live server), your config, and the TOTP secret. Repeatable and incremental — point it at a synced folder, an external drive, or a network share, on a cadence.
 - **If you push the git repo to a remote by hand** (e.g. a private mirror), you must name all three namespaces — git's defaults silently drop two of them, and a partial refspec silently drops the state tags:
   ```bash
-  git -C concordance.git push <remote> 'refs/heads/*:refs/heads/*' 'refs/concordance/*:refs/concordance/*' 'refs/tags/state/*:refs/tags/state/*'
+  git -C stasima.git push <remote> 'refs/heads/*:refs/heads/*' 'refs/concordance/*:refs/concordance/*' 'refs/tags/state/*:refs/tags/state/*'
   ```
   This is exactly the mistake `backup` exists to make impossible — prefer the command.
 - **`map_index.sqlite` needs no backup** — `reindex` regenerates it from git.
@@ -101,7 +101,7 @@ Out-of-band notification isn't built yet (a 1.x item), so an instance's messages
 
 ## Embeddings
 
-Search quality depends on this. `embed_backend = "stub"` is offline and deterministic but only lexical-ish. For real semantic search, run a local model server and set in `concordance.toml`:
+Search quality depends on this. `embed_backend = "stub"` is offline and deterministic but only lexical-ish. For real semantic search, run a local model server and set in `stasima.toml`:
 
 ```toml
 embed_backend = "local-server"
@@ -135,4 +135,4 @@ Then `reindex` once to re-embed the corpus. Swapping models is always a clean re
 - **GitHub / multi-machine sync**, and **multi-user with cryptographic identity** — v1 is single-practitioner, names-as-identity.
 - **The richer messaging social layer** (tiers, subscriptions, message expiry) and an agentic **Cartographer** that reads across perspectives.
 
-For the full picture of what's built and deferred, see `concordance-v1-build-state.md` in the parent folder.
+For the full picture of what's built and deferred, see `stasima-v1-build-state.md` in the parent folder.

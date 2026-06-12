@@ -15,7 +15,7 @@ import admin
 entry = lambda title, body: compose_entry({"type": "kno", "title": title, "status": "active"}, body).encode()
 
 work = tempfile.mkdtemp(prefix="cap-admin-")
-gd = os.path.join(work, "concordance.git")
+gd = os.path.join(work, "stasima.git")
 sp.run(["git", "init", "--bare", "-q", gd], check=True)
 store = LocalCapStore(gd, approvers={"practitioner"})
 
@@ -32,7 +32,7 @@ store.commit("refs/concordance/proposals/p-1", {"practice/principle.md": entry("
              expected_parent=store.resolve_ref("refs/concordance/proposals/p-1"), op_id="op-2")
 
 # a config pointing at the repo (forward slashes — valid + escape-free in TOML, fine for git/Python)
-cfgpath = os.path.join(work, "concordance.toml")
+cfgpath = os.path.join(work, "stasima.toml")
 with open(cfgpath, "w", encoding="utf-8") as f:
     f.write(f'git_dir = "{gd.replace(os.sep, "/")}"\n')
 
@@ -74,7 +74,7 @@ assert chk2["valid"] is False, chk2
 dest = os.path.join(work, "backup")
 bk = run("backup", dest)
 assert bk["git_sync_ok"] and bk["audit_events"] >= 1, bk
-mirror = LocalCapStore(os.path.join(dest, "concordance-mirror.git"), approvers={"x"})
+mirror = LocalCapStore(os.path.join(dest, "stasima-mirror.git"), approvers={"x"})
 assert mirror.resolve_ref("refs/heads/main") == store.resolve_ref("refs/heads/main")
 assert mirror.resolve_ref("refs/tags/state/3c"), "state tag rode the backup"
 assert os.path.exists(os.path.join(dest, "audit.sqlite"))

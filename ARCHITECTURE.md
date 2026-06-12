@@ -1,4 +1,4 @@
-# Concordance — Architecture
+# Stasima — Architecture
 
 How the system fits together and why it's shaped this way. The [README](README.md) gives the five-concept mental model; this is the layer beneath it — for someone modifying the suite, auditing its guarantees, or deciding whether to trust it with a practice.
 

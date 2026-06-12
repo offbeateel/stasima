@@ -26,13 +26,13 @@ banner() { echo; echo "=== $* ==="; }
 
 # --- isolated bare repo, no checkout ----------------------------------------
 ROOT="$(mktemp -d)"
-export GIT_DIR="$ROOT/concordance.git"
+export GIT_DIR="$ROOT/stasima.git"
 git init --bare -q "$GIT_DIR"
 echo "bare repo: $GIT_DIR"
 
 # committer identity is the server ("capstore"); author is overridden per-op
-export GIT_COMMITTER_NAME="capstore"   GIT_COMMITTER_EMAIL="capstore@concordance.local"
-export GIT_AUTHOR_NAME="capstore"      GIT_AUTHOR_EMAIL="capstore@concordance.local"
+export GIT_COMMITTER_NAME="capstore"   GIT_COMMITTER_EMAIL="capstore@stasima.local"
+export GIT_AUTHOR_NAME="capstore"      GIT_AUTHOR_EMAIL="capstore@stasima.local"
 export GIT_COMMITTER_DATE="2026-01-01T00:00:00 +0000"
 export GIT_AUTHOR_DATE="2026-01-01T00:00:00 +0000"
 
@@ -56,7 +56,7 @@ banner "STEP 0  empty repo has no refs"
 
 # ============================================================================
 banner "STEP 1  bootstrap canon (main) — initial corpus commit"
-t="$(build_tree "" canon/orientation.md $'Welcome to the Concordance.\n')"
+t="$(build_tree "" canon/orientation.md $'Welcome to the Stasima.\n')"
 c0="$(git commit-tree "$t" -m $'Bootstrap canon\n\nop-id: boot-0001')"
 git update-ref refs/heads/main "$c0" "$ZERO"          # create-only (old = zero)
 [ "$(git rev-parse refs/heads/main)" = "$c0" ] && pass "main created at $c0" || fail "main not set"
@@ -65,14 +65,14 @@ git update-ref refs/heads/main "$c0" "$ZERO"          # create-only (old = zero)
 banner "STEP 2  perspective write — append-only branch per instance"
 # first append: orphan commit (no parent), CAS create
 t="$(build_tree "" instances/research-2/entries/0001.md $'Entry 1 by research-2.\n')"
-p1="$(GIT_AUTHOR_NAME=research-2 GIT_AUTHOR_EMAIL=r2@concordance.local \
+p1="$(GIT_AUTHOR_NAME=research-2 GIT_AUTHOR_EMAIL=r2@stasima.local \
       git commit-tree "$t" -m $'KIP 0001\n\nop-id: op-aaa\ninstance-id: research-2')"
 git update-ref refs/concordance/perspectives/research-2 "$p1" "$ZERO"
 pass "perspective created at $p1"
 
 # second append, based on the previous tip's tree, CAS expects old = p1
 t="$(build_tree "$p1" instances/research-2/entries/0002.md $'Entry 2 by research-2.\n')"
-p2="$(GIT_AUTHOR_NAME=research-2 GIT_AUTHOR_EMAIL=r2@concordance.local \
+p2="$(GIT_AUTHOR_NAME=research-2 GIT_AUTHOR_EMAIL=r2@stasima.local \
       git commit-tree "$t" -p "$p1" -m $'KIP 0002\n\nop-id: op-bbb\ninstance-id: research-2')"
 git update-ref refs/concordance/perspectives/research-2 "$p2" "$p1"
 pass "perspective advanced $p1 -> $p2 (CAS old=p1 matched)"
@@ -98,7 +98,7 @@ if git merge-base --is-ancestor "$p2" "$side"; then fail "side should not be FF"
 banner "STEP 5  proposal to canon + prepare_merge (durable, UNREFERENCED candidate)"
 git update-ref refs/concordance/proposals/p-001 "$c0" "$ZERO"           # branch proposal off main
 t="$(build_tree "$c0" canon/entries/principle-1.md $'Principle 1: never silently lose work.\n')"
-pr="$(GIT_AUTHOR_NAME=research-2 GIT_AUTHOR_EMAIL=r2@concordance.local \
+pr="$(GIT_AUTHOR_NAME=research-2 GIT_AUTHOR_EMAIL=r2@stasima.local \
       git commit-tree "$t" -p "$c0" -m $'Propose principle-1\n\nop-id: op-ccc\ninstance-id: research-2')"
 git update-ref refs/concordance/proposals/p-001 "$pr" "$c0"
 

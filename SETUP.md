@@ -1,4 +1,4 @@
-# Concordance — Setup (one-time)
+# Stasima — Setup (one-time)
 
 Follow this once to stand up a deployment. After it, day-to-day lives in **[OPERATIONS.md](OPERATIONS.md)**. If the concepts here are unfamiliar, read the *Mental model* in [README.md](README.md) first.
 
@@ -16,9 +16,9 @@ Follow this once to stand up a deployment. After it, day-to-day lives in **[OPER
 ## 2. Configure
 
 ```bash
-cp concordance.toml.example concordance.toml
+cp stasima.toml.example stasima.toml
 ```
-Edit `concordance.toml`. At minimum set `git_dir` to the absolute path where the repo should live (it doesn't need to exist yet — the next step creates it). Leave `embed_backend = "stub"` for now.
+Edit `stasima.toml`. At minimum set `git_dir` to the absolute path where the repo should live (it doesn't need to exist yet — the next step creates it). Leave `embed_backend = "stub"` for now.
 
 > **Trust boundary.** The "nothing is silently lost" guarantee assumes the server process is the *only* writer to the repo. Keep the bare repo on storage only the server (and you) can write — the integrity rests on filesystem permissions, not on anything in the code.
 
@@ -50,15 +50,15 @@ status: active
 The substrate must never silently lose committed work.
 ```
 
-**Keep your deployment separate from this code folder** — a sibling folder (e.g. `concordance-deployment/`) holding your `concordance.toml`, the bare repo, the audit db, the TOTP secret, and your `seed/`. The suite stays clean for upgrades; your data never enters its repository. If you collected entries during preparation (a `seed-pending/`), they go there too.
+**Keep your deployment separate from this code folder** — a sibling folder (e.g. `stasima-deployment/`) holding your `stasima.toml`, the bare repo, the audit db, the TOTP secret, and your `seed/`. The suite stays clean for upgrades; your data never enters its repository. If you collected entries during preparation (a `seed-pending/`), they go there too.
 
 **The orientation slots** are the practice's voice on arrival. The renderer looks for `technical/orientation/<section>.md` for: `welcome`, `orientation`, `syntax`, `conduct`, `claims`, `community`. Author any subset; the rest show a labeled placeholder until you write them (you can add them later via OPERATIONS.md).
 
 Then seed in one command (creates the repo if needed, seeds canon, builds the search index):
 
 ```bash
-python admin.py --config concordance.toml bootstrap seed/
-python admin.py --config concordance.toml status        # confirm: canon_head set, entries present
+python admin.py --config stasima.toml bootstrap seed/
+python admin.py --config stasima.toml status        # confirm: canon_head set, entries present
 ```
 
 ---
@@ -70,10 +70,10 @@ The server speaks MCP over stdio. Point a client (Claude Desktop / Claude Code) 
 ```json
 {
   "mcpServers": {
-    "concordance": {
+    "stasima": {
       "command": "python",
       "args": ["/abs/path/to/cap_server.py"],
-      "env": { "CONCORDANCE_CONFIG": "/abs/path/to/concordance.toml" }
+      "env": { "STASIMA_CONFIG": "/abs/path/to/stasima.toml" }
     }
   }
 }
@@ -88,8 +88,8 @@ When you hand a chat this connection, also hand it **its name** — it passes th
 If you'll ever approve canon landings away from the console (through an instance conversation on your phone), set up the TOTP pairing now:
 
 ```bash
-python admin.py --config concordance.toml totp-provision --qr   # scan with any authenticator app
-python admin.py --config concordance.toml totp-check <code>     # confirm the pairing
+python admin.py --config stasima.toml totp-provision --qr   # scan with any authenticator app
+python admin.py --config stasima.toml totp-check <code>     # confirm the pairing
 ```
 
 Skippable — console `land` works without it, and you can provision later. Details in OPERATIONS → *Approving remotely*.
@@ -97,8 +97,8 @@ Skippable — console `land` works without it, and you can provision later. Deta
 ## 6. Verify
 
 ```bash
-python admin.py --config concordance.toml status     # canon head, seq, perspectives, audit health
-python admin.py --config concordance.toml verify     # audit chain integrity
+python admin.py --config stasima.toml status     # canon head, seq, perspectives, audit health
+python admin.py --config stasima.toml verify     # audit chain integrity
 python run_tests.py                                  # the full suite (12 files), if you want belt-and-braces
 ```
 

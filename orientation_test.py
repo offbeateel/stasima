@@ -13,7 +13,7 @@ from entries import compose_entry
 from orientation import build_orientation, MACHINERY, SECTIONS
 
 work = tempfile.mkdtemp(prefix="cap-orient-")
-gd = os.path.join(work, "concordance.git")
+gd = os.path.join(work, "stasima.git")
 sp.run(["git", "init", "--bare", "-q", gd], check=True)
 store = LocalCapStore(gd, approvers={"practitioner"})
 
