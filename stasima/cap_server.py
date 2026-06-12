@@ -444,6 +444,7 @@ def components_from_config(cfg):
     server and the admin CLI, so both wire components the same way."""
     store = LocalCapStore(cfg.git_dir, approvers=set(cfg.approvers), canon_ref=cfg.canon_ref,
                           committer=(cfg.committer_name, cfg.committer_email))
+    os.makedirs(os.path.dirname(cfg.resolved_map_db()) or ".", exist_ok=True)   # a fresh deploy dir
     index = SqliteMapIndex(cfg.resolved_map_db())
     audit = SqliteAuditLog(cfg.resolved_audit_db())
     if cfg.embed_backend == "local-server":   # LM Studio / Ollama (OpenAI-compatible)
