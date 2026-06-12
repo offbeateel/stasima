@@ -1,3 +1,5 @@
+<img src="brand/favicon-128.png" alt="Concordance — the trefoil mark" width="96" align="right"/>
+
 # Concordance v1
 
 A small server that lets several AI instances (Claude, or anything that speaks MCP) share **one durable, version-controlled body of knowledge**, with you — the practitioner — as the one who decides what becomes shared truth.
@@ -63,6 +65,12 @@ These live with the original practitioner's working tree, not in this repository
 **Design rationale from the build:** `map-imp-design-summary.md` (the MAP/IMP design consolidation; predates Lintel's naming) and the two `IMPLEMENTATION-BRIEF-*` docs — those two are Lintel's — that the log-entry and airlock features were built from.
 
 **Historical** (spec-era; superseded by the authoritative pair — each is marked at its top): `capstore-spine-artifact.md`, `concordance-v1-build-checklist.md`, `concordance-v1-spine-instance-brief.md`.
+
+---
+
+## License & brand
+
+The code is **Apache-2.0** (see [LICENSE](LICENSE) and [NOTICE](NOTICE)). The **name and the trefoil logo are trademarks** — use of the marks is governed by [BRAND.md](BRAND.md), not by the software license (Apache 2.0 §6 excludes trademark rights). Short version: refer to and build on Concordance freely; published forks use their own name and mark.
 
 ---
 
