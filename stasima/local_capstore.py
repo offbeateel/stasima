@@ -114,10 +114,16 @@ class LocalCapStore:
         env["GIT_DIR"] = self.git_dir
         if extra_env:
             env.update(extra_env)
-        p = subprocess.run(
-            [self.git_bin, *args],
-            input=input, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env,
-        )
+        # When we're not feeding git stdin, give it DEVNULL rather than letting it INHERIT ours.
+        # Under the MCP stdio transport on Windows our stdin is the JSON-RPC pipe the event loop is
+        # reading; an inherited handle stalls that pipe and hangs every read-only tool. (Console
+        # stdin is harmless to inherit, which is why this never showed outside the stdio server.)
+        kwargs = dict(stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env)
+        if input is None:
+            kwargs["stdin"] = subprocess.DEVNULL
+        else:
+            kwargs["input"] = input
+        p = subprocess.run([self.git_bin, *args], **kwargs)
         return p.returncode, p.stdout, p.stderr.decode("utf-8", "replace")
 
     def _git(self, *args: str, input: Optional[bytes] = None, extra_env: Optional[dict] = None) -> bytes:
