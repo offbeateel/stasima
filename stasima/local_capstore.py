@@ -200,6 +200,17 @@ class LocalCapStore:
         rc, out, _ = self._run("diff", "--name-only", a, b)
         return out.decode().split() if rc == 0 else []
 
+    def branch_creator(self, ref: str, base_ref: str):
+        """The instance that opened a branch: author of its oldest commit not reachable from
+        base_ref (commits are self-describing, so this is readable from content truth alone).
+        None if the branch has no unique commits yet."""
+        rc, out, _ = self._run("rev-list", "--reverse", ref, f"^{base_ref}")
+        if rc != 0 or not out.strip():
+            return None
+        first = out.decode().split()[0]
+        return self._trailer(first, "instance-id") or self._git(
+            "show", "-s", "--format=%an", first).decode().strip()
+
     def commit_ops(self, ref: str) -> list[dict]:
         """Every commit reachable from `ref`, with its self-describing op_id + author.
         The raw material for audit reconciliation (the artifact's git-first-then-audit recovery)."""
@@ -259,7 +270,10 @@ class LocalCapStore:
                 self._git("read-tree", "--empty", extra_env=env)
             for path, content in changes.items():
                 if content is None:
-                    self._git("update-index", "--force-remove", path, extra_env=env)
+                    # bare-safe deletion: --force-remove requires a work tree; --index-info with a
+                    # null sha removes the entry from the temp index directly
+                    self._git("update-index", "--index-info",
+                              input=f"0 {ZERO}\t{path}\n".encode(), extra_env=env)
                 else:
                     blob = self._git("hash-object", "-w", "--stdin", input=content, extra_env=env).decode().strip()
                     self._git("update-index", "--add", "--cacheinfo", f"100644,{blob},{path}", extra_env=env)

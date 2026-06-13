@@ -254,6 +254,13 @@ def build_server(store: LocalCapStore, index=None, embedder=None, audit=None, au
         tip = store.resolve_ref(ref)
         if tip is None:
             raise RefNotFound(ref)
+        # retraction is destructive, so the lane is creator-only (adding stays open to all —
+        # additions are attributed and reviewed at land; removals erase someone else's work)
+        owner = store.branch_creator(ref, store.canon_ref)
+        if owner and owner != instance_id:
+            _log(instance_id, "propose_retract", target_ref=ref, target_path=path, outcome="denied",
+                 detail={"reason": "not the proposal's creator", "owner": owner})
+            raise Denied(f"proposal {proposal_id} was opened by {owner} — only its creator may retract from it")
         r = store.commit(ref, {path: None}, f"retract {path}",
                          Identity(instance_id), expected_parent=tip, op_id=op_id)
         _log(instance_id, "propose_retract", target_ref=ref, target_path=path, op_id=op_id, result_oid=r.oid)

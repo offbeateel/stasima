@@ -96,6 +96,24 @@ async def main():
         ps = payload(await client.call_tool("proposal_status", {"proposal_id": "p-1"}))
         print("conflict_preview:", cp, "| proposal_status:", ps["status"])
 
+        # retraction: creator-only lane (audited denial), and every retract writes operation-truth
+        r9 = await client.call_tool("propose_retract", {"instance_id": "research-9", "proposal_id": "p-1",
+                                                        "path": "practice/principle-durability.md", "op_id": "rx-1"})
+        assert getattr(r9, "isError", False), "cross-instance retract must be denied"
+        denial = [e for e in audit.events(op="propose_retract") if e["outcome"] == "denied"]
+        assert denial and denial[-1]["actor"] == "research-9" and denial[-1]["detail"]["owner"] == "research-2"
+        ok_r = await client.call_tool("propose_retract", {"instance_id": "research-2", "proposal_id": "p-1",
+                                                          "path": "practice/principle-durability.md", "op_id": "rx-2"})
+        assert not getattr(ok_r, "isError", False), "creator's own retract must succeed"
+        evs = [e for e in audit.events(op="propose_retract") if e["outcome"] == "ok"]
+        assert evs and evs[-1]["actor"] == "research-2" and evs[-1]["target_path"] == "practice/principle-durability.md"             and evs[-1]["result_oid"], "retraction must write full operation-truth"
+        assert "practice/principle-durability.md" not in store.list_paths("refs/cap/proposals/p-1"),             "retracted path must actually leave the proposal tree"
+        print("retract lane: cross-instance denied (audited) | own retract OK (audited, content gone)")
+        # restore the entry so nothing downstream changes
+        await client.call_tool("propose", {"instance_id": "research-2", "proposal_id": "p-1", "domain": "practice",
+                                           "slug": "principle-durability", "body": "Promote durability to a stated principle.",
+                                           "op_id": "op-3b", "title": "Durability principle"})
+
         # message multiple recipients, flag, inbox, read
         await client.call_tool("imp_send", {"sender": "research-2", "recipients": ["research-7", "recto"],
             "subject": "Durability is load-bearing", "body": "Look before proposing scaling changes.",
