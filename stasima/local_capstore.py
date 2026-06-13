@@ -57,6 +57,11 @@ class MergeSummary:
     changed_paths: list[str]
     conflicts: list[str]
     authoring_instances: list[str]
+    # typed split of changed_paths (merge-result vs canon) so a caller can tell a benign add from a
+    # canon REMOVAL — landing a removal is refused (canon is append-only), so it must be visible.
+    added: list = field(default_factory=list)
+    removed: list = field(default_factory=list)
+    modified: list = field(default_factory=list)
 
 
 @dataclass(frozen=True)
@@ -86,6 +91,7 @@ class NonFastForward(CapStoreError): ...                   # append-only violati
 class ProtectedRef(CapStoreError): ...                     # write attempt to main
 class MergeConflict(CapStoreError): ...
 class MergeNotApproved(CapStoreError): ...                 # land_merge gate failed
+class CanonAppendOnly(CapStoreError): ...                  # a land would REMOVE a canon path
 class BackendUnavailable(CapStoreError): retryable = True  # git/disk failure
 
 
@@ -227,6 +233,18 @@ class LocalCapStore:
         rc, out, _ = self._run("diff", "--name-only", a, b)
         return out.decode().split() if rc == 0 else []
 
+    def _diff_status(self, a: Oid, b: Oid):
+        """(added, removed, modified) going a -> b. 'removed' is the load-bearing one: a path that
+        leaves canon. Renames are decomposed by --no-renames so a move reads as remove+add."""
+        out = self._git("diff", "--name-status", "--no-renames", a, b).decode()
+        added, removed, modified = [], [], []
+        for line in out.splitlines():
+            if not line.strip():
+                continue
+            st, _, path = line.partition("\t")
+            (added if st.startswith("A") else removed if st.startswith("D") else modified).append(path.strip())
+        return added, removed, modified
+
     def branch_creator(self, ref: str, base_ref: str):
         """The instance that opened a branch: author of its oldest commit not reachable from
         base_ref (commits are self-describing, so this is readable from content truth alone).
@@ -265,11 +283,12 @@ class LocalCapStore:
             raise BackendUnavailable(f"merge-tree -> {rc}: {err.strip()}")
         lines = text.splitlines()
         conflicts = [l for l in lines[1:] if l.strip()] if rc == 1 else []
-        changed = []
+        added = removed = modified = []
         if rc == 0 and lines:
-            changed = self._git("diff", "--name-only", into_tip, lines[0].strip()).decode().split()
+            added, removed, modified = self._diff_status(into_tip, lines[0].strip())
         authors = sorted(set(self._git("log", "--format=%an", f"{into_tip}..{prop_tip}").decode().split()) - {""})
-        return MergeSummary(changed_paths=changed, conflicts=conflicts, authoring_instances=authors)
+        return MergeSummary(changed_paths=sorted(added + removed + modified), conflicts=conflicts,
+                            authoring_instances=authors, added=added, removed=removed, modified=modified)
 
     # ---- trailer / result helpers ----
     def _trailer(self, commit: Oid, key: str) -> Optional[str]:
@@ -390,7 +409,17 @@ class LocalCapStore:
             raise BackendUnavailable(f"merge-tree -> {rc}: {err.strip()}")
 
         merged_tree = text.splitlines()[0].strip()
-        changed = self._git("diff", "--name-only", into_tip, merged_tree).decode().split()
+        added, removed, modified = self._diff_status(into_tip, merged_tree)
+        # THE APPEND-ONLY GUARD: a land must never remove a canon path. Paths are permanent promises;
+        # revision is supersede (a new entry + a metadata flip on the old), which never drops the path.
+        # A merge that deletes a canon entry (e.g. a proposal that retracted a path canon also holds)
+        # would silently lose committed work — the exact wound. Refuse at prepare, before any candidate
+        # is referenced, so console-land AND the airlock both fail closed.
+        if removed:
+            raise CanonAppendOnly(
+                f"landing {proposal_ref} would REMOVE canon path(s) {removed} — canon is append-only "
+                f"(supersede, never delete; a published path is a permanent promise). Re-author the "
+                f"proposal so its tree still contains these paths.")
         authors = sorted(set(self._git("log", "--format=%an", f"{into_tip}..{prop_tip}").decode().split()) - {""})
         cand = self._git(
             "commit-tree", merged_tree, "-p", into_tip, "-p", prop_tip,
@@ -399,7 +428,8 @@ class LocalCapStore:
         ).decode().strip()
         # NOTE: `cand` is durable but unreferenced — nothing points at it until land_merge.
         return MergePreparation(cand, into, proposal_ref,
-                                MergeSummary(changed, [], authors))
+                                MergeSummary(sorted(added + modified), [], authors,
+                                             added=added, removed=removed, modified=modified))
 
     def land_merge(self, prepared: MergePreparation, approval: Approval) -> CommitResult:
         if approval.candidate_oid != prepared.candidate_oid:

@@ -35,7 +35,7 @@ from .entries import compose_entry
 from .cap_server import components_from_config
 from .canon import reindex_from_git, land_and_record, canon_seq, seq_display, LOG_DIR
 from .audit_log import reconcile_from_git, anchor_audit_head, verify_against_anchor
-from .local_capstore import Approval, MergeConflict, PERSP_PREFIX as PERSP, PROP_PREFIX as PROP
+from .local_capstore import Approval, MergeConflict, CanonAppendOnly, PERSP_PREFIX as PERSP, PROP_PREFIX as PROP
 from .airlock import generate_secret, otpauth_uri, verify_code, totp_at, STEP
 
 
@@ -229,8 +229,10 @@ def run(args) -> dict:
 
     if args.cmd == "preview":
         s = store.preview_merge(PROP + args.proposal_id, cfg.canon_ref)
-        logs = [p for p in s.changed_paths if p.startswith(LOG_DIR)]
-        return {"conflicts": s.conflicts, "changed_paths": s.changed_paths, "authors": s.authoring_instances,
+        logs = [p for p in (s.added + s.modified) if p.startswith(LOG_DIR)]
+        return {"conflicts": s.conflicts, "authors": s.authoring_instances,
+                "adds": s.added, "removes": s.removed, "modifies": s.modified,
+                "would_remove_canon": s.removed,          # non-empty -> `land` will REFUSE (append-only)
                 "log_entries": logs, "log_entry_ok": len(logs) == 1,
                 "expected_seq": format(canon_seq(store, cfg.seq_origin) + 1, "x")}
 
@@ -242,6 +244,8 @@ def run(args) -> dict:
             prepared = store.prepare_merge(PROP + args.proposal_id, cfg.canon_ref)
         except MergeConflict as e:
             raise SystemExit(f"conflict — not landing: {e}")
+        except CanonAppendOnly as e:
+            raise SystemExit(f"append-only — not landing: {e}")
         try:
             return land_and_record(store, index, embedder, audit, prepared,
                                    Approval(prepared.candidate_oid, approver, "cli-confirm"),

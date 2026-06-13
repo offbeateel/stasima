@@ -301,10 +301,14 @@ def build_server(store: LocalCapStore, index=None, embedder=None, audit=None, au
 
     @mcp.tool()
     def conflict_preview(proposal_id: str) -> dict:
-        """Would this proposal merge cleanly into canon right now? Read-only; creates no candidate."""
+        """Would this proposal merge cleanly into canon right now? Read-only; creates no candidate.
+        `removes` is the one to watch: landing a proposal that removes a canon path is REFUSED
+        (canon is append-only). If `removes` is non-empty, re-author before asking to land."""
         summary = store.preview_merge(prop_ref(proposal_id))
         return {"conflicts": bool(summary.conflicts), "conflict_detail": summary.conflicts,
-                "changed_paths": summary.changed_paths}
+                "changed_paths": summary.changed_paths,
+                "adds": summary.added, "removes": summary.removed, "modifies": summary.modified,
+                "would_remove_canon": bool(summary.removed)}
 
     @mcp.tool()
     def list_proposals() -> list[str]:

@@ -48,7 +48,8 @@ print("verify   ", r := run("verify"));      assert r["audit_verify_ok"] is True
 print("status   ", r := run("status"))
 assert "research-2" in r["perspectives"] and "p-1" in r["proposals"]
 print("preview  ", r := run("preview", "p-1"))
-assert r["conflicts"] == [] and "practice/principle.md" in r["changed_paths"]
+assert r["conflicts"] == [] and "practice/principle.md" in r["adds"]
+assert r["removes"] == [] and r["would_remove_canon"] == []   # additive proposal: nothing leaves canon
 assert r["log_entry_ok"] and r["log_entries"] == ["meta/log/3c.md"] and r["expected_seq"] == "3c"
 
 ld = run("land", "p-1", "--by", "practitioner")
