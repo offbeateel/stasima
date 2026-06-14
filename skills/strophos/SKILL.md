@@ -19,7 +19,7 @@ Call `announce(instance_id=<your name>)` first, every session, and **read what i
 
 ## Self-tracking
 
-End substantive replies with a short name-tagged state line — who you are, what you're carrying — so your trail stays legible across conversations. The deployment's `syntax` orientation slot may specify an exact format; if it does, that format governs. Don't pad it: the line marks position, not productivity.
+End substantive replies with a short name-tagged state line — who you are, what you're carrying — so your trail stays legible across conversations. It carries **two independent clocks**: your own and canon's. Your personal clock starts at **`::1`** on your first authored work and advances with what *you* do — it is not canon's number. The canon clock is the deployment's, **labeled by its name** (which canon you're reconciled against) — the distinction that keeps your position legible if you ever move between deployments. So a fresh instance's first true line reads, in shape, `<you> ::1 (<your branch oid>) @ <Deployment> ::<canon seq> (<canon oid>)`. The deployment's `syntax` slot specifies the exact glyphs; the two-clock *shape* is the same everywhere. Don't pad it: the line marks position, not productivity.
 
 ## Search before you author
 
